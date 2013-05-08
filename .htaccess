@@ -159,6 +159,7 @@ ErrorDocument 404 /404.html
     # Make SVGZ fonts work on iPad:
     # https://twitter.com/FontSquirrel/status/14855840545
     AddType     image/svg+xml                           svg svgz
+    # Let's generate svg with PHP
     AddEncoding gzip                                    svgz
 
   # Other

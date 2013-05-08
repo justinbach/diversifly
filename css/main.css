@@ -95,14 +95,16 @@ textarea {
 
 body {
   background: url('../img/bg.jpg');
-  width: 1920px;
-  height: 1200px;
+  max-width: 1920px;
+  max-height: 1200px;
+  margin: auto;
 }
 
 #container {
-	width: 1920px;
+	max-width: 1920px;
 	min-width: 1332px;
 	height: 1200px;
+  overflow: auto;
 }
 
 .gutter {
@@ -111,6 +113,22 @@ body {
 
 .col {
 	width: 296px;
+}
+
+.buttons {
+  width: 398px;
+  margin: auto;
+}
+
+.buttons > a:last-of-type {
+  margin-right: 0px;
+}
+
+.button {
+  margin-right: 30px;
+  width: 182px;
+  height: 186px;
+  display: inline-block;
 }
 
 #landing {
@@ -123,6 +141,11 @@ body {
 #landing img {
   display: block;
   margin: auto;
+}
+
+#landing p {
+  margin: 30px auto 50px auto;
+  text-align: center;
 }
 
 
