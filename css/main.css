@@ -93,6 +93,33 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+/* Typefaces */
+@font-face {
+    font-family: 'BrandonGrotesqueBlack';
+    src: url('../fonts/brandon_blk.eot');
+    src: url('../fonts/brandon_blk.eot') format('embedded-opentype'),
+         url('../fonts/brandon_blk.woff') format('woff'),
+         url('../fonts/brandon_blk.ttf') format('truetype'),
+         url('../fonts/brandon_blk.svg#BrandonGrotesqueBlack') format('svg');
+}
+
+@font-face {
+    font-family: 'PTSansBold';
+    src: url('../fonts/pts75f.eot');
+    src: url('../fonts/pts75f.eot') format('embedded-opentype'),
+         url('../fonts/pts75f.woff') format('woff'),
+         url('../fonts/pts75f.ttf') format('truetype'),
+         url('../fonts/pts75f.svg#PTSansBold') format('svg');
+}
+
+/* typography */
+
+a, a:visited {
+  color: #FFF;
+}
+
+/* structure */
+
 body {
   background: url('../img/bg.jpg');
   max-width: 1920px;
@@ -115,9 +142,9 @@ body {
 	width: 296px;
 }
 
-a, a:visited {
-  color: #FFF;
-}
+
+
+/* button groups */
 
 .buttons {
   width: 402px;
@@ -148,6 +175,23 @@ a, a:visited {
   text-align: center;
   width: 80px;
   z-index: 5;
+  font-family: "PTSansBold";
+  font-size: 24px;
+  line-height: 24px;
+}
+
+/* landing page-specific stuff */
+
+#landing-goal {
+  height: 1200px;
+  width: 1332px;
+  overflow: auto;
+  background: url(../img/goals/landing.jpg) center;
+  position: absolute;
+  z-index: 10;
+  opacity: 0.5;
+  left: 53px;
+  /*visibility: hidden;*/
 }
 
 #landing {
@@ -163,8 +207,12 @@ a, a:visited {
 }
 
 #landing p {
-  margin: 30px auto 50px auto;
+  margin: 20px auto 40px auto;
   text-align: center;
+  font-family: "BrandonGrotesqueBlack";
+  font-size: 32px;
+  line-height: 32px;
+  letter-spacing: 1px;
 }
 
 
