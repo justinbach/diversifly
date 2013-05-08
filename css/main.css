@@ -115,8 +115,12 @@ body {
 	width: 296px;
 }
 
+a, a:visited {
+  color: #FFF;
+}
+
 .buttons {
-  width: 398px;
+  width: 402px;
   margin: auto;
 }
 
@@ -125,10 +129,25 @@ body {
 }
 
 .button {
-  margin-right: 30px;
-  width: 182px;
-  height: 186px;
+  margin-right: 26px;
+  width: 186px;
+  height: 190px;
   display: inline-block;
+  position: relative;
+}
+
+.button img {
+  position: absolute;
+}
+
+.button span {
+  position: absolute;
+  top: 64px;
+  left: 51px;
+  display: block;
+  text-align: center;
+  width: 80px;
+  z-index: 5;
 }
 
 #landing {
