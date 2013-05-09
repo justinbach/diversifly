@@ -1,4 +1,4 @@
-<div id="eyespots-goal" class="goal"></div>
+<!-- <div id="eyespots-goal" class="goal"></div> -->
 <div id="eyespots" class="page-container">
   <img src="img/diversifly_logo.svg" width="180" height="134" />
   <h1 class="banner">SELECT NUMBER OF EYESPOTS</h1>
@@ -13,5 +13,5 @@
       <div class="right">MORE <span class="red">+</span></div>
     </div>
   </div>
-  <a class="button" href="<?php echo get_link("palette")?>"><span>Next Step</span><img src="img/eye_button_yellow.svg" width="186" height="190"></a>
+  <a class="button" href="<?php echo get_link("palette")?>"><span>Next Step</span><img src="img/eye_button.php?color=D6A86F" width="186" height="190"></a>
 </div>
