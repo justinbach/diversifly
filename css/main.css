@@ -316,6 +316,7 @@ body {
 
 #eyespot-slider-elements {
   width: 620px;
+  height: 54px;
   margin: 130px auto 20px;
   font-family: "BrandonGrotesqueBlack";
   font-size: 30px;
@@ -331,6 +332,12 @@ body {
   left: 50%;
   margin-left: -203px;
 }
+
+#eyespots .button {
+  margin: 30px auto;
+  display: block;
+}
+
 
 /* jquery ui slider customizations */
 .ui-slider-horizontal .ui-state-default {

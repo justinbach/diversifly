@@ -12,6 +12,6 @@
       <div id="eyespot-slider"></div>
       <div class="right">MORE <span class="red">+</span></div>
     </div>
-    </div>
   </div>
+  <a class="button" href="<?php echo get_link("palette")?>"><span>Next Step</span><img src="img/eye_button_yellow.svg" width="186" height="190"></a>
 </div>
