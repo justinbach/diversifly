@@ -7,5 +7,7 @@
     <div id="eyespot-display">
       <img src="img/butterfly.svg" width="620" height="408" />
     </div>
+    <div id="eyespot-slider">
+    </div>
   </div>
 </div>
