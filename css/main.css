@@ -112,6 +112,16 @@ textarea {
          url('../fonts/pts75f.svg#PTSansBold') format('svg');
 }
 
+@font-face {
+    font-family: 'PTSansRegular';
+    src: url('../fonts/pts55f.eot');
+    src: url('../fonts/pts55f.eot') format('embedded-opentype'),
+         url('../fonts/pts55f.woff') format('woff'),
+         url('../fonts/pts55f.ttf') format('truetype'),
+         url('../fonts/pts55f.svg#PTSansRegular') format('svg');
+}
+
+
 /* typography */
 
 .banner {
@@ -124,8 +134,28 @@ textarea {
   -webkit-text-stroke: 2px #000;
 }
 
+.subtitle {
+  font-family: "PTSansBold";
+  font-size: 22px;
+  color: #b82025;
+  text-align: center;
+  margin: auto;
+  letter-spacing: -1px;
+  width: 576px;
+  line-height: 34px;
+}
+
 a, a:visited {
   color: #FFF;
+}
+
+.body-copy {
+  font-family: "PTSansRegular";
+  font-size: 22px;
+  margin: auto;
+  text-align: center;
+  width: 600px;
+  line-height: 34px;
 }
 
 /* structure */
@@ -161,6 +191,13 @@ body {
   margin: auto;
 }
 
+.spacer {
+  width: 225px;
+  height: 2px;
+  border-top: 2px dashed #b82025;
+  margin: 20px auto 20px;
+}
+
 .goal {
   height: 1200px;
   width: 1332px;
@@ -169,7 +206,7 @@ body {
   z-index: 10;
   opacity: 0.5;
   left: 53px;
-  visibility: hidden;
+  /*visibility: hidden;*/
 }
 
 /* button groups */
@@ -244,6 +281,10 @@ body {
   background: url(../img/goals/about.jpg) center;
 }
 
+#about .button {
+  margin: 10px auto;
+  display: block;
+}
 
 
 
