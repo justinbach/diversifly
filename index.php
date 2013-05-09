@@ -29,5 +29,5 @@ function get_abs_path() {
 }
 
 function get_link($page) {
-  return(get_abs_path() . '/?page=' . $page);
+  return(get_abs_path() . '?page=' . $page);
 }

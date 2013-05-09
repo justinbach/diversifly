@@ -114,6 +114,16 @@ textarea {
 
 /* typography */
 
+.banner {
+  color: #d6a86f;
+  font-family: "BrandonGrotesqueBlack";
+  font-size: 60px;
+  line-height: 60px;
+  margin: 0 auto;
+  text-align: center;
+  -webkit-text-stroke: 2px #000;
+}
+
 a, a:visited {
   color: #FFF;
 }
@@ -142,7 +152,25 @@ body {
 	width: 296px;
 }
 
+.page-container {
+  margin: auto;
+}
 
+.page-container img {
+  display: block;
+  margin: auto;
+}
+
+.goal {
+  height: 1200px;
+  width: 1332px;
+  overflow: auto;
+  position: absolute;
+  z-index: 10;
+  opacity: 0.5;
+  left: 53px;
+  visibility: hidden;
+}
 
 /* button groups */
 
@@ -183,27 +211,13 @@ body {
 /* landing page-specific stuff */
 
 #landing-goal {
-  height: 1200px;
-  width: 1332px;
-  overflow: auto;
   background: url(../img/goals/landing.jpg) center;
-  position: absolute;
-  z-index: 10;
-  opacity: 0.5;
-  left: 53px;
-  visibility: hidden;
 }
 
 #landing {
   padding-top: 306px;
-	margin: auto;
 	width: 620px;
 	height: 540px;
-}
-
-#landing img {
-  display: block;
-  margin: auto;
 }
 
 #landing p {
@@ -217,7 +231,18 @@ body {
 
 /* about page */
 
+#about {
+  padding-top: 94px;
+  width: 620px;
+}
 
+#about .banner {
+  margin-top: 26px;
+}
+
+#about-goal {
+  background: url(../img/goals/about.jpg) center;
+}
 
 
 

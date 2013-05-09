@@ -1,5 +1,5 @@
-<div id="landing-goal"></div>
-<div id="landing">
+<!-- <div id="landing-goal" class="goal"></div> -->
+<div id="landing" class="page-container">
   <img src="img/diversifly_logo.svg" width="336" height="250" />
   <p>WELCOME TO DIVERSIFLY</p>
   <div class="buttons">
