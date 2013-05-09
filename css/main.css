@@ -219,7 +219,7 @@ body {
   margin-left: -666px;
   z-index: 10;
   opacity: 0.5;
-  visibility: hidden;
+  /*visibility: hidden;*/
 }
 
 /* button groups */
@@ -361,6 +361,10 @@ body {
 
 #palette .banner {
   margin-top: 26px;
+}
+
+#palette-goal {
+  background: url(../img/goals/palette.jpg) center;
 }
 
 
