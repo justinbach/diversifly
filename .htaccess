@@ -215,6 +215,8 @@ AddDefaultCharset utf-8
   # Options +SymLinksIfOwnerMatch
     RewriteEngine On
   # RewriteBase /
+  RewriteEngine On
+  # RewriteRule ^(.*)$ index.php?page=$1 [L] # rewrite query strings
 </IfModule>
 
 # ------------------------------------------------------------------------------
