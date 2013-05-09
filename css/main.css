@@ -286,8 +286,24 @@ body {
   display: block;
 }
 
+/* eyespots page */
 
+#eyespots {
+  padding-top: 94px;
+  width: 920px;
+}
 
+#eyespots .banner {
+  margin-top: 26px;
+}
+
+#eyespots .spacer {
+  margin-bottom: 34px;
+}
+
+#eyespots-goal {
+  background: url(../img/goals/eyespots.jpg) center;
+}
 
 
 
