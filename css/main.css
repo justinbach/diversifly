@@ -191,7 +191,7 @@ body {
   z-index: 10;
   opacity: 0.5;
   left: 53px;
-  /*visibility: hidden;*/
+  visibility: hidden;
 }
 
 #landing {
