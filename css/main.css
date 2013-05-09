@@ -353,6 +353,15 @@ body {
   background: url(../img/goals/eyespots.jpg) center;
 }
 
+/* palette selection page */
+#palette {
+  padding-top: 94px;
+  width: 1272px;
+}
+
+#palette .banner {
+  margin-top: 26px;
+}
 
 
 
