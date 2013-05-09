@@ -17,6 +17,7 @@ include('inc/header.php');
 include('pages/' . $page . '.php');
 include('inc/footer.php');
 
+// a few helpful utils
 
 function get_abs_path() {
   $url = $_SERVER['REQUEST_URI'];
@@ -25,4 +26,8 @@ function get_abs_path() {
   $url_arr_sliced = array_slice($url_arr, 0, $url_arr_size - 1);
   $path = implode('/', $url_arr_sliced) . '/';
   return $path;
+}
+
+function get_link($page) {
+  return(get_abs_path() . '/?page=' . $page);
 }
