@@ -13,6 +13,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <link rel="stylesheet" href="<?php echo $abs_path ?>css/normalize.css">
+    <link rel="stylesheet" href="<?php echo $abs_path ?>css/ui-lightness/jquery-ui-1.10.3.custom.css">
     <link rel="stylesheet" href="<?php echo $abs_path ?>css/main.css">
     <script src="<?php echo $abs_path ?>js/vendor/modernizr-2.6.2.min.js"></script>
   </head>

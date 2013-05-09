@@ -158,6 +158,10 @@ a, a:visited {
   line-height: 34px;
 }
 
+.red {
+  color: #b82025;
+}
+
 /* structure */
 
 body {
@@ -198,15 +202,24 @@ body {
   margin: 20px auto 20px;
 }
 
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
 .goal {
   height: 1200px;
   width: 1332px;
   overflow: auto;
   position: absolute;
+  left: 50%;
+  margin-left: -666px;
   z-index: 10;
   opacity: 0.5;
-  left: 53px;
-  /*visibility: hidden;*/
+  visibility: hidden;
 }
 
 /* button groups */
@@ -299,6 +312,34 @@ body {
 
 #eyespots .spacer {
   margin-bottom: 34px;
+}
+
+#eyespot-slider-elements {
+  width: 620px;
+  margin: 130px auto 20px;
+  font-family: "BrandonGrotesqueBlack";
+  font-size: 30px;
+  color: #404041;
+  position: relative;
+}
+
+#eyespot-slider {
+  width: 382px;
+  height: 53px;
+  background-color: #777;
+  position: absolute;
+  left: 50%;
+  margin-left: -203px;
+}
+
+/* jquery ui slider customizations */
+.ui-slider-horizontal .ui-state-default {
+  background: black;
+  top: 0px;
+}
+
+.ui-widget-content {
+  background: none;
 }
 
 #eyespots-goal {
