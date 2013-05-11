@@ -9,13 +9,26 @@ echo('<?xml version="1.0" encoding="utf-8"?>');
 <!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="309.434px" height="307.224px" viewBox="0 0 309.434 307.224" enable-background="new 0 0 309.434 307.224"
+	 width="309.434px" height="307.224px" viewBox="0 0 313.434 313.224" enable-background="new 0 0 309.434 307.224"
 	 xml:space="preserve">
+  <defs>
+    <filter id="dropshadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
 <path fill="#FFFFFF" d="M59.894,23.909c0,0,42.893-20.997,79.885-23.636s87.505,14.764,87.505,14.764s16.506,4.477,27.495,12.657
 	c8.366,6.228,15.5,12.58,18.64,17.509c11.829,12.421,40.222,60.332,35.489,96.411c-5.323,40.222-8.281,52.642-8.281,54.417
 	s-13.012,31.939-30.757,55.597c-7.274,9.699-21.591,12.646-37.63,34.886c-26.067,16.425-64.29,27.955-117.338,15.391
 	C67.584,283.565,20.857,247.484,7.254,195.437c-8.615-45.534-13.247-88.223,7.81-125.502C32.462,54.531,38.687,38.047,59.894,23.909
-	z"/>
+	z" filter="url(#dropshadow)"/>
 <path fill="#414042" d="M124.958,17.402c0,0,47.908-5.915,82.215,8.281c22.477,11.238,24.844,18.928,30.758,21.885
 	c18.335,10.646,33.714,17.744,41.403,35.489c5.914,20.701,8.873,49.091,6.506,66.245c3.439,21.971-1.561,31.471-9.464,52.64
 	c-9.464,14.196-28.982,43.772-39.629,54.419s-42.807,38.444-82.029,34.896s-68.798-11.832-86.542-30.165

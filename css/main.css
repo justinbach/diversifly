@@ -360,6 +360,17 @@ body {
   border: none;
   width: 81px;
   height: 53px;
+  text-decoration: none
+}
+
+#handle-text {
+  font-size: 24px;
+  font-family: "BrandonGrotesqueBlack";
+  color: #FFF;
+  position: absolute;
+  width: 81px;
+  text-align: center;
+  top: 10px;
 }
 
 .ui-widget-content {
