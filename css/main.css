@@ -325,12 +325,24 @@ body {
 }
 
 #eyespot-slider {
-  width: 382px;
+  width: 312px;
   height: 53px;
-  background-color: #777;
+  /*background-color: #777;*/
   position: absolute;
   left: 50%;
-  margin-left: -203px;
+  bottom: 6px;
+  margin-left: -171px;
+  font-size: 67px; /* hack - this sets slider handle width indirectly */
+  border: none;
+  overflow: visible;
+}
+
+#eyespot-slider-rule {
+  position: absolute;
+  top: 26px;
+  right: -32px;
+  width: 382px;
+  border-top: 2px solid #808080;
 }
 
 #eyespots .button {
@@ -341,8 +353,13 @@ body {
 
 /* jquery ui slider customizations */
 .ui-slider-horizontal .ui-state-default {
-  background: black;
+  background: url(../img/slider.svg);
+  background-size: 81px 53px;
   top: 0px;
+  border-radius: 0px;
+  border: none;
+  width: 81px;
+  height: 53px;
 }
 
 .ui-widget-content {

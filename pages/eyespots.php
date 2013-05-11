@@ -9,7 +9,9 @@
     </div>
     <div id="eyespot-slider-elements">
       <div class="left"><span class="red">-</span> LESS</div>
-      <div id="eyespot-slider"></div>
+      <div id="eyespot-slider">
+        <div id="eyespot-slider-rule"></div>
+      </div>
       <div class="right">MORE <span class="red">+</span></div>
     </div>
   </div>
