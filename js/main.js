@@ -14,15 +14,13 @@ $("document").ready(function() {
       _.bindAll(this, 'render');
       this.model.bind('change:eyespot_count', this.render);
       this.$handleText = null;
+      this.$eyespotSlider = $('#eyespot-slider');
       this.render();
-      console.log('initialize...m.eyespot_count is', this.model.get('eyespot_count'));
     },
     render: function() {
       var v = this;
       var m = this.model;
-      if (this.$handleText != null) // only valid once slider exists
-        this.$handleText.html(m.get('eyespot_count'));
-      $("#eyespot-slider").slider({
+      v.$eyespotSlider.slider({
         value: m.get('eyespot_count'),
         min: 1,
         max: 18,
@@ -36,7 +34,9 @@ $("document").ready(function() {
         slide: function(event, ui) {
           m.set({'eyespot_count': ui.value});
         }
-    })}
+      });
+      this.$handleText.html(m.get('eyespot_count'));
+    }
   });
 
   var butterfly = new Butterfly();
