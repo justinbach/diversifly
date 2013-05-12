@@ -14,7 +14,7 @@ if(!isset($_GET['page']) || $_GET['page'] == NULL) { // TODO: check for '..'
 $abs_path = get_abs_path();
 
 include('inc/header.php');
-include('pages/' . $page . '.php');
+include('inc/templates.php');
 include('inc/footer.php');
 
 // a few helpful utils

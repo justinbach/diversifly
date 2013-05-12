@@ -7,4 +7,3 @@
     <a class="button" href="<?php echo get_link("about")?>"><span>Learn More</span><img src="img/eye_button.php?color=D6A86F" width="186" height="190"></a>
   </div>
 </div>
-

@@ -24,3 +24,4 @@
 
     <!-- Add your site or application content here -->
     <div id="container">
+    </div>
