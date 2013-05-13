@@ -68,13 +68,17 @@ $("document").ready(function() {
     }
   }
 
-  var $page_holder = $('#page-holder');
+  var $pageHolder = $('#page-holder');
 
+  // TODO: clean up using promises
+  // TODO: add history.pushstate support or similar?
   var navigateTo = function(page) {
     // debugger;
-    $page_holder.fadeOut(function() {
-      $page_holder.html(pages[page].template.html());
-      $page_holder.find('a').each(function(index, el) {
+    $pageHolder.fadeOut(function() {
+      var targetPage = pages[page];
+      $pageHolder.html(targetPage.template.html());
+      _(targetPage.fns).each(function (fn) { fn(); });
+      $pageHolder.find('a.nav').each(function(index, el) {
         $el = $(el);
         // debugger;
         $el.click((function($el) {
@@ -85,7 +89,7 @@ $("document").ready(function() {
             });
           }) ($el));
       });
-      $page_holder.fadeIn();
+      $pageHolder.fadeIn();
     });
 
   }
