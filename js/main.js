@@ -70,26 +70,34 @@ $("document").ready(function() {
 
   var $pageHolder = $('#page-holder');
 
+  // animation setup
+  $.fn.animateOut = $.fn.fadeOut;
+  $.fn.animateIn = $.fn.fadeIn;
+
+
   // TODO: clean up using promises
   // TODO: add history.pushstate support or similar?
   var navigateTo = function(page) {
-    // debugger;
-    $pageHolder.fadeOut(function() {
+    $pageHolder.animateOut();
+    $pageHolder.promise().done(function() {
       var targetPage = pages[page];
+      // load new content, execute page functions,
+      //  and bind click handlers
       $pageHolder.html(targetPage.template.html());
       _(targetPage.fns).each(function (fn) { fn(); });
       $pageHolder.find('a.nav').each(function(index, el) {
         $el = $(el);
-        // debugger;
         $el.click((function($el) {
           return (
             function(e) {
               navigateTo($el.attr('href'));
               return false;
             });
-          }) ($el));
+          }
+        )($el));
       });
-      $pageHolder.fadeIn();
+
+      $pageHolder.animateIn();
     });
 
   }
