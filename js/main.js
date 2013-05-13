@@ -102,7 +102,7 @@ $("document").ready(function() {
 
   }
 
-  navigateTo('landing');
+  navigateTo('palette'); // kick things off
 
 
 });
