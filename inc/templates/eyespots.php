@@ -16,6 +16,6 @@
         <div class="right">MORE <span class="red">+</span></div>
       </div>
     </div>
-    <a class="button" href="<?php echo get_link("palette")?>"><span>Next Step</span><img src="img/eye_button.php?color=D6A86F" width="186" height="190"></a>
+    <a class="button" href="palette"><span>Next Step</span><img src="img/eye_button.php?color=D6A86F" width="186" height="190"></a>
   </div>
 </script>

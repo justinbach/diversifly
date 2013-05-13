@@ -68,21 +68,26 @@ $("document").ready(function() {
     }
   }
 
-  var $container = $('#container');
+  var $page_holder = $('#page-holder');
 
   var navigateTo = function(page) {
     // debugger;
-    $container.fadeOut(function() {
-      $container.html(pages[page].template.html());
-      $container.fadeIn();
+    $page_holder.fadeOut(function() {
+      $page_holder.html(pages[page].template.html());
+      $page_holder.find('a').each(function(index, el) {
+        $el = $(el);
+        // debugger;
+        $el.click((function($el) {
+          return (
+            function(e) {
+              navigateTo($el.attr('href'));
+              return false;
+            });
+          }) ($el));
+      });
+      $page_holder.fadeIn();
     });
-    $container.find('a').click(
-      function(el) {
-        debugger;
-        navigateTo(el.href);
-      }
-    );
-    return false;
+
   }
 
   navigateTo('landing');
