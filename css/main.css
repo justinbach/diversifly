@@ -258,19 +258,19 @@ body {
   line-height: 24px;
 }
 
-/* landing page-specific stuff */
+/* home page-specific stuff */
 
-#landing-goal {
-  background: url(../img/goals/landing.jpg) center;
+#home-goal {
+  background: url(../img/goals/home.jpg) center;
 }
 
-#landing {
+#home {
   padding-top: 306px;
 	width: 620px;
 	height: 540px;
 }
 
-#landing p {
+#home p {
   margin: 20px auto 40px auto;
   text-align: center;
   font-family: "BrandonGrotesqueBlack";

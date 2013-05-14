@@ -1,6 +1,6 @@
-<script type="text/template" id="landing-template">
-  <!-- <div id="landing-goal" class="goal"></div> -->
-  <div id="landing" class="page-container">
+<script type="text/template" id="home-template">
+  <!-- <div id="home-goal" class="goal"></div> -->
+  <div id="home" class="page-container">
     <img src="img/diversifly_logo.svg" width="336" height="250" />
     <p>WELCOME TO DIVERSIFLY</p>
     <div class="buttons">

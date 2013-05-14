@@ -54,8 +54,8 @@ $("document").ready(function() {
       template: $('#about-template'),
       fns: []
     },
-    landing : {
-      template: $('#landing-template'),
+    home : {
+      template: $('#home-template'),
       fns: []
     },
     eyespots : {
@@ -107,7 +107,7 @@ $("document").ready(function() {
   Backbone.history.start();
   var router = new Router();
 
-  router.navigate('landing', { trigger : true }); // kick things off
+  router.navigate('home', { trigger : true }); // kick things off
 
 
 });
