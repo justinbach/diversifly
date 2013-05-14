@@ -133,12 +133,30 @@ $(function() {
     }
   });
 
+  var PalettePageView = Backbone.View.extend({
+    el : $('#palette-page'),
+
+  });
+
+  var ButterflyPaletteView = Backbone.View.extend({
+    render : function () {
+        alert('debugging');
+        debugger;
+        this.$el.html(
+          _.template($('#butterfly-palette-template').html(), {
+          'colorString' : ""
+      }))
+    }
+  });
+
   var PaletteView = PageView.extend({
     template : _.template($('#palette-template').html()),
     render : function() {
       PageView.prototype.render.apply(this);
       // the router ensures that the butterfly model has the right spot count
-      debugger;
+      var palettePageView = new PalettePageView({
+        collection : butterfliesWithSpotCount
+      });
     }
   });
 
@@ -146,7 +164,7 @@ $(function() {
   // top-level app
   var App = Backbone.View.extend({
 
-    el: $('#container'),
+    el : $('#container'),
 
     initialize : function () {
       this.views = {
