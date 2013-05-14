@@ -61,7 +61,7 @@ $(function() {
     el: $('#page-holder'),
 
     initialize : function () {
-      console.log('initialize');
+      // console.log('initialize');
     },
 
     render : function() {
@@ -134,18 +134,39 @@ $(function() {
   });
 
   var PalettePageView = Backbone.View.extend({
-    el : $('#palette-page'),
-
+    el : $('.palette-page'),
+    initialize : function() {
+      this.$el = $('.palette-page');
+      _.bindAll(this, ['render']);
+      this._butterflyPaletteViews = [];
+      var that = this;
+      this.collection.each(function(bfly) {
+        that._butterflyPaletteViews.push(new ButterflyPaletteView({
+          model : bfly
+        }));
+      });
+    },
+    render : function() {
+      var that = this;
+      this.$el.empty();
+      console.log(this.$el);
+      _(this._butterflyPaletteViews).each(function(bflyView) {
+        that.$el.append(bflyView.render().$el);
+      });
+    }
   });
 
   var ButterflyPaletteView = Backbone.View.extend({
+    initialize : function() {
+      _.bind(this, 'render');
+    },
     render : function () {
-        alert('debugging');
-        debugger;
-        this.$el.html(
-          _.template($('#butterfly-palette-template').html(), {
-          'colorString' : ""
-      }))
+      // alert('debugging');
+      this.$el.html(
+        _.template($('#butterfly-palette-template').html(), {
+        'colorString' : ""
+      }));
+      return this;
     }
   });
 
@@ -154,9 +175,12 @@ $(function() {
     render : function() {
       PageView.prototype.render.apply(this);
       // the router ensures that the butterfly model has the right spot count
+      console.log($('.palette-page'));
       var palettePageView = new PalettePageView({
         collection : butterfliesWithSpotCount
       });
+      palettePageView.render();
+      console.log($('.palette-page'));
     }
   });
 
