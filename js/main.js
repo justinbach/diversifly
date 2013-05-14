@@ -68,13 +68,18 @@ $("document").ready(function() {
     }
   }
 
-  // backbone routing for history
+  // routing / navigation via backbone
   var Router = Backbone.Router.extend({
     routes : {
+      "palette/:spotCount" : "palette",
       ":page" : "defaultTransition",
+      "*path" : "defaultRoute"
     },
 
-    // TODO: add history.pushstate support or similar?
+    defaultRoute : function() {
+      this.defaultTransition('home');
+    },
+
     defaultTransition : function(page) {
       var $pageHolder = $('#page-holder');
       // animation setup
@@ -84,7 +89,7 @@ $("document").ready(function() {
       $pageHolder.promise().done(function() {
         var targetPage = pages[page];
         // load new content, execute page functions,
-        //  and bind click handlers
+        // and bind click handlers
         $pageHolder.html(targetPage.template.html());
         _(targetPage.fns).each(function (fn) { fn(); });
         $pageHolder.find('a.nav').each(function(index, el) {
@@ -104,10 +109,9 @@ $("document").ready(function() {
     }
   });
 
-  Backbone.history.start();
   var router = new Router();
+  Backbone.history.start(); // let's go
 
-  router.navigate('home', { trigger : true }); // kick things off
 
 
 });
