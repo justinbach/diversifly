@@ -68,41 +68,46 @@ $("document").ready(function() {
     }
   }
 
-  var $pageHolder = $('#page-holder');
+  // backbone routing for history
+  var Router = Backbone.Router.extend({
+    routes : {
+      ":page" : "defaultTransition",
+    },
 
-  // animation setup
-  $.fn.animateOut = $.fn.fadeOut;
-  $.fn.animateIn = $.fn.fadeIn;
+    // TODO: add history.pushstate support or similar?
+    defaultTransition : function(page) {
+      var $pageHolder = $('#page-holder');
+      // animation setup
+      $.fn.animateOut = $.fn.fadeOut;
+      $.fn.animateIn = $.fn.fadeIn;
+      $pageHolder.animateOut();
+      $pageHolder.promise().done(function() {
+        var targetPage = pages[page];
+        // load new content, execute page functions,
+        //  and bind click handlers
+        $pageHolder.html(targetPage.template.html());
+        _(targetPage.fns).each(function (fn) { fn(); });
+        $pageHolder.find('a.nav').each(function(index, el) {
+          $el = $(el);
+          $el.click((function($el) {
+            return (
+              function(e) {
+              router.navigate($el.attr('href'), { trigger : true});
+                return false;
+              });
+            }
+          )($el));
+        });
 
-
-  // TODO: clean up using promises
-  // TODO: add history.pushstate support or similar?
-  var navigateTo = function(page) {
-    $pageHolder.animateOut();
-    $pageHolder.promise().done(function() {
-      var targetPage = pages[page];
-      // load new content, execute page functions,
-      //  and bind click handlers
-      $pageHolder.html(targetPage.template.html());
-      _(targetPage.fns).each(function (fn) { fn(); });
-      $pageHolder.find('a.nav').each(function(index, el) {
-        $el = $(el);
-        $el.click((function($el) {
-          return (
-            function(e) {
-              navigateTo($el.attr('href'));
-              return false;
-            });
-          }
-        )($el));
+        $pageHolder.animateIn();
       });
+    }
+  });
 
-      $pageHolder.animateIn();
-    });
+  Backbone.history.start();
+  var router = new Router();
 
-  }
-
-  navigateTo('palette'); // kick things off
+  router.navigate('landing', { trigger : true }); // kick things off
 
 
 });
