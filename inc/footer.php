@@ -6,6 +6,9 @@
     <script src="js/vendor/backbone-min.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/data.js"></script>
+    <script type="text/javascript">
+      var absPath = "<?php echo $abs_path ?>";
+    </script>
     <script src="js/main.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

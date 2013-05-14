@@ -110,7 +110,7 @@ $("document").ready(function() {
   });
 
   var router = new Router();
-  Backbone.history.start(); // let's go
+  Backbone.history.start({ pushState : true, root : absPath}); // let's go
 
 
 
