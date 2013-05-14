@@ -1,5 +1,10 @@
 $(function() {
 
+
+  //////////////////////////////////
+  // MODELS
+  //////////////////////////////////
+
   // model for butterfly selection
   Butterfly = Backbone.Model.extend({
     defaults: {
@@ -15,20 +20,7 @@ $(function() {
   // jquery caching
   var $pageHolder = $('#page-holder');
 
-  // navigation
-  var bindNavLinks = function () {
-    $pageHolder.find('a.nav').each(function(index, el) {
-        $el = $(el);
-        $el.click((function($el) {
-          return (
-            function(e) {
-            router.navigate($el.attr('href'), { trigger : true});
-              return false;
-            });
-          }
-        )($el));
-      });
-  }
+
 
   // animation setup
   $.fn.animateOut = $.fn.fadeOut;
@@ -140,42 +132,100 @@ $(function() {
   // Backbone.history.start(); // let's go
 
 
-  var SimpleView = Backbone.View.extend({
-    render:
+  //////////////////////////////////
+  // VIEWS
+  //////////////////////////////////
+
+  // helper for initializing navigation links
+  var bindNavLinks = function ($container) {
+    $container.find('a.nav').each(function(index, el) {
+      $el = $(el);
+      $el.click((function($el) {
+        return (
+          function(e) {
+            router.navigate($el.attr('href'), { trigger : true});
+            return false;
+          });
+        }
+      )($el));
+    });
+  }
+
+  // generic view for page support
+  var PageView = Backbone.View.extend({
+
+    el: $('#page-holder'),
+
+    initialize : function () {
+      console.log('initialize');
+    },
+
+    render : function() {
+      this.$el.html(this.template());
+      bindNavLinks(this.$el);
+    }
   });
 
-  var HomeView = Backbone.View.extend({ template: _.template($('#home-template').html())});
-  var AboutView = Backbone.View.extend({ template: _.template($('#about-template').html())});
-  var EyespotsView = Backbone.View.extend({ template: _.template($('#eyespots-template').html())});
-  var PaletteView = Backbone.View.extend({ template: _.template($('#palette-template').html())});
+  var HomeView = PageView.extend({ template: _.template($('#home-template').html())});
+
+  var AboutView = PageView.extend({ template: _.template($('#about-template').html())});
+
+  var EyespotsView = PageView.extend({
+    template: _.template($('#eyespots-template').html())
+  });
+
+  var PaletteView = PageView.extend({
+    template: _.template($('#palette-template').html())
+  });
 
 
-  var App = {
+  var App = Backbone.View.extend({
+
+    el: $('#container'),
+
     initialize : function () {
-      App.views = {
+      this.views = {
         homeView : new HomeView(),
         aboutView : new AboutView(),
         eyespotsView : new EyespotsView(),
         paletteView : new PaletteView()
       };
-      $pageHolder = $('#page-holder');
-      debugger;
-      $pageHolder.append(App.views.homeView.el);
+      this.showView(this.views.homeView);
+    },
+    showView : function (view) {
+        this.$el.html(view.render()).show();
+    }
+  });
 
+  var app = new App;
+
+  //////////////////////////////////
+  // ROUTING
+  //////////////////////////////////
+
+  var Router = Backbone.Router.extend({
+    routes : {
+      // "palette/eyespots/:spotCount/page/:page" : "palette",
+      // "eyespots" : "eyespots",
+      ":page" : "defaultTransition"
+      // "*path" : "defaultRoute"
     },
 
-    showView : function (view) {
-      if (App.views.current != undefined) {
-        $(App.views.current.el).hide();
+    defaultTransition : function(page) {
+      var pageViewMap = {
+        home : "homeView",
+        about : "aboutView",
+        eyespots : "eyespotsView",
+        palette : "paletteView",
       }
-      App.views.current = view;
-      $(App.views.current.el).show();
+      console.log(page);
+      // debugger;
+      app.showView(app.views[pageViewMap[page]])
     }
-  }
+  });
 
-  App.initialize();
-  App.showView(App.views.homeView);
-
-
+  // kick things off
+  var router = new Router();
+  Backbone.history.start();
 
 });
