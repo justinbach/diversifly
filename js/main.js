@@ -133,7 +133,12 @@ $(function() {
       this.showView(this.views.homeView);
     },
     showView : function (view) {
-        this.$el.html(view.render()).show();
+      $viewEl = this.$el;
+      $viewEl.fadeOut();
+      v = this;
+      $viewEl.promise().done(function() {
+        $viewEl.html(view.render()).fadeIn();
+      });
     }
   });
 
