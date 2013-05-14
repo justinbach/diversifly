@@ -21,6 +21,7 @@ $(function() {
   })
 
   var butterflyPage = new Butterflies(); // active page for palette selection
+  var pageLength = 8; // number of butterflies on a page
   var butterfliesWithSpotCount = new Butterflies(); // total # butterflies meeting spot count
 
   var updateButterfliesWithSpotCount = function(spotCount) {
@@ -173,15 +174,24 @@ $(function() {
 
   var PaletteView = PageView.extend({
     template : _.template($('#palette-template').html()),
+    page : 1,
+    setPage : function(p) {
+      if (p > butterfliesWithSpotCount.length / 8 || p < 1)
+        this.page = 1;
+      else
+        this.page = p;
+    },
+    updatePagination : function(p) {
+      this.setPage(p);
+    },
     render : function() {
       PageView.prototype.render.apply(this);
       // the router ensures that the butterfly model has the right spot count
-      console.log($('.palette-page'));
+      var start = this.page * pageLength - 1;
       var palettePageView = new PalettePageView({
-        collection : butterfliesWithSpotCount
+        collection : new Butterflies(butterfliesWithSpotCount.slice(start, start + pageLength))
       });
       palettePageView.render();
-      console.log($('.palette-page'));
     }
   });
 
@@ -235,16 +245,22 @@ $(function() {
     },
 
     palette : function(spotCount, page) {
-      butterfly.set('eyespot_count', spotCount);
-      updateButterfliesWithSpotCount(spotCount);
-      this.defaultTransition('palette');
+      if (this.oldRoute.indexOf("palette") != -1) {
+        // pagination event
+        app.views.paletteView.updatePagination(page);
+      } else {
+        butterfly.set('eyespot_count', spotCount);
+        updateButterfliesWithSpotCount(spotCount);
+        app.views.paletteView.setPage(page);
+        this.defaultTransition('palette');
+      }
     },
 
     oldRoute : "",
 
     defaultTransition : function(route) {
       app.showView(app.views[this.pageViewMap[route]])
-      oldRoute = route;
+      this.oldRoute = route;
     }
   });
 
