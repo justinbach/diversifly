@@ -16,6 +16,26 @@ $(function() {
 
   var butterfly = new Butterfly(); // current butterfly being "created"
 
+  var Butterflies = Backbone.Collection.extend({
+    model: Butterfly
+  })
+
+  var butterflyPage = new Butterflies(); // active page for palette selection
+  var butterfliesWithSpotCount = new Butterflies(); // total # butterflies meeting spot count
+
+  var updateButterfliesWithSpotCount = function(spotCount) {
+    butterfliesWithSpotCount.reset();
+    IDsOfInterest = diversifly_data[spotCount - 1]; // 0-indexed
+    _(IDsOfInterest).each(function(palette, id) {
+      butterfliesWithSpotCount.add({
+        eyespot_count : spotCount,
+        id : id,
+        palette : palette
+      });
+    });
+  }
+
+
   //////////////////////////////////
   // VIEWS
   //////////////////////////////////
@@ -89,7 +109,7 @@ $(function() {
 
   // bind the button to the eyespot count for linking
   var PaletteButtonView = Backbone.View.extend({
-    initialize: function() {
+    initialize : function() {
       _.bindAll(this, 'updateLink');
       this.model.bind('change:eyespot_count', this.updateLink);
     },
@@ -114,7 +134,12 @@ $(function() {
   });
 
   var PaletteView = PageView.extend({
-    template: _.template($('#palette-template').html())
+    template : _.template($('#palette-template').html()),
+    render : function() {
+      PageView.prototype.render.apply(this);
+      // the router ensures that the butterfly model has the right spot count
+      debugger;
+    }
   });
 
 
@@ -166,7 +191,9 @@ $(function() {
       this.defaultTransition('home')
     },
 
-    palette : function() {
+    palette : function(spotCount, page) {
+      butterfly.set('eyespot_count', spotCount);
+      updateButterfliesWithSpotCount(spotCount);
       this.defaultTransition('palette');
     },
 
