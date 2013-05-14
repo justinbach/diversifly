@@ -48,57 +48,10 @@ $(function() {
   //   // the eyespots page
   //   eyespots: function () {
   //     var init = function() {
-  //       var SliderView = Backbone.View.extend({
-  //         initialize: function() {
-  //           _.bindAll(this, 'render');
-  //           this.model.bind('change:eyespot_count', this.render);
-  //           this.$handleText = null;
-  //           this.$eyespotSlider = $('#eyespot-slider');
-  //           this.render();
-  //         },
-  //         render: function() {
-  //           var v = this;
-  //           var m = this.model;
-  //           v.$eyespotSlider.slider({
-  //             value: m.get('eyespot_count'),
-  //             min: 1,
-  //             max: 18,
-  //             step: 1,
-  //             create: function() {
-  //               $('.ui-slider-handle').first().html(
-  //                 '<span id="handle-text">'+m.get('eyespot_count')+'</span>'
-  //               );
-  //               v.$handleText = $('#handle-text');
-  //             },
-  //             slide: function(event, ui) {
-  //               m.set({'eyespot_count': ui.value});
-  //             }
-  //           });
-  //           this.$handleText.html(m.get('eyespot_count'));
-  //         }
-  //       });
 
-  //       var sliderView = new SliderView({
-  //         model: butterfly
-  //       });
 
-  //       // bind the button to the eyespot count for linking
-  //       var PaletteButtonView = Backbone.View.extend({
-  //         initialize: function() {
-  //           _.bindAll(this, 'updateLink');
-  //           this.model.bind('change:eyespot_count', this.updateLink);
-  //         },
-  //         updateLink : function () {
-  //           this.el.setAttribute("href", "palette/eyespots/" + this.model.get('eyespot_count')
-  //             + "/page/1");
-  //         }
-  //       });
 
-  //       var paletteButtonView = new PaletteButtonView({
-  //         model: butterfly,
-  //         el: document.getElementById('palette-link')
-  //       });
-  //     };
+      // };
   //     this.defaultTransition('eyespots', init);
   //   },
 
@@ -170,8 +123,61 @@ $(function() {
 
   var AboutView = PageView.extend({ template: _.template($('#about-template').html())});
 
+  // handles update of slider count as well as spot count in model
+  var SliderView = Backbone.View.extend({
+    initialize: function() {
+      _.bindAll(this, 'render');
+      this.model.bind('change:eyespot_count', this.render);
+      this.$handleText = null;
+      this.$eyespotSlider = $('#eyespot-slider');
+      this.render();
+    },
+    render: function() {
+      var v = this;
+      var m = this.model;
+      v.$eyespotSlider.slider({
+        value: m.get('eyespot_count'),
+        min: 1,
+        max: 18,
+        step: 1,
+        create: function() {
+          $('.ui-slider-handle').first().html(
+            '<span id="handle-text">'+m.get('eyespot_count')+'</span>'
+          );
+          v.$handleText = $('#handle-text');
+        },
+        slide: function(event, ui) {
+          m.set({'eyespot_count': ui.value});
+        }
+      });
+      this.$handleText.html(m.get('eyespot_count'));
+    }
+  });
+
+  // bind the button to the eyespot count for linking
+  var PaletteButtonView = Backbone.View.extend({
+    initialize: function() {
+      _.bindAll(this, 'updateLink');
+      this.model.bind('change:eyespot_count', this.updateLink);
+    },
+    updateLink : function () {
+      this.el.setAttribute("href", "palette/eyespots/" + this.model.get('eyespot_count')
+        + "/page/1");
+    }
+  });
+
   var EyespotsView = PageView.extend({
-    template: _.template($('#eyespots-template').html())
+    template : _.template($('#eyespots-template').html()),
+    render : function () {
+      PageView.prototype.render.apply(this);
+      var sliderView = new SliderView({
+        model: butterfly
+      });
+      var paletteButtonView = new PaletteButtonView({
+        model: butterfly,
+        el: document.getElementById('palette-link')
+      });
+    }
   });
 
   var PaletteView = PageView.extend({
