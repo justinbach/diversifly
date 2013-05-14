@@ -215,11 +215,11 @@ AddDefaultCharset utf-8
   # Options +SymLinksIfOwnerMatch
     RewriteEngine On
   # RewriteBase /
-    RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
-    RewriteRule ^(.*)$ - [E=BASE:%1]
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ %{ENV:BASE}/index.php?/$1 [L]
+    # RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
+    # RewriteRule ^(.*)$ - [E=BASE:%1]
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^(.*)$ %{ENV:BASE}/index.php?/$1 [L]
   # RewriteRule ^(.*)$ index.php?page=$1 [L] # rewrite query strings
 </IfModule>
 

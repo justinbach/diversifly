@@ -16,6 +16,6 @@
         <div class="right">MORE <span class="red">+</span></div>
       </div>
     </div>
-    <a class="button nav" href="palette"><span>Next Step</span><img src="img/eye_button.php?color=D6A86F" width="186" height="190"></a>
+    <a id="palette-link" class="button nav" href="palette/eyspots/1/page/1"><span>Next Step</span><img src="img/eye_button.php?color=D6A86F" width="186" height="190"></a>
   </div>
 </script>

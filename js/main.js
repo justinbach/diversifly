@@ -46,6 +46,24 @@ $("document").ready(function() {
     var sliderView = new SliderView({
       model: butterfly
     });
+
+    // bind the button to the eyespot count for linking
+    var PaletteButtonView = Backbone.View.extend({
+      initialize: function() {
+        _.bindAll(this, 'updateLink');
+        this.model.bind('change:eyespot_count', this.updateLink);
+      },
+      updateLink : function () {
+        this.el.setAttribute("href", "palette/eyespots/" + this.model.get('eyespot_count')
+          + "/page/1");
+      }
+    });
+
+    var paletteButtonView = new PaletteButtonView({
+      model: butterfly,
+      el: document.getElementById('palette-link')
+    });
+
   }
 
   // pages and flow
@@ -71,9 +89,13 @@ $("document").ready(function() {
   // routing / navigation via backbone
   var Router = Backbone.Router.extend({
     routes : {
-      "palette/:spotCount" : "palette",
+      "palette/eyespots/:spotCount/page/:page" : "palette",
       ":page" : "defaultTransition",
       "*path" : "defaultRoute"
+    },
+
+    palette : function () {
+      this.defaultTransition('palette');
     },
 
     defaultRoute : function() {
@@ -110,7 +132,7 @@ $("document").ready(function() {
   });
 
   var router = new Router();
-  Backbone.history.start({ pushState : true, root : absPath}); // let's go
+  Backbone.history.start(); // let's go
 
 
 
