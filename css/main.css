@@ -239,10 +239,22 @@ body {
   height: 190px;
   display: inline-block;
   position: relative;
+  background-size: 186px 190px;
+  color: white;
 }
 
-.button img {
-  position: absolute;
+.button.red {
+  background-image: url(../img/eye_button.php?color=B82025);
+}
+
+.button.yellow {
+  background-image: url(../img/eye_button.php?color=D6A86F);
+}
+
+.button.disabled {
+  background-image: url(../img/eye_button.php?color=888888);
+  cursor: default;
+  pointer-events: none;
 }
 
 .button span {
