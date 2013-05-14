@@ -30,7 +30,7 @@ $(function() {
       butterfliesWithSpotCount.add({
         eyespot_count : spotCount,
         id : id,
-        palette : palette
+        palette : _(palette).map(function (c) { return c.substr(1); })
       });
     });
   }
@@ -164,8 +164,9 @@ $(function() {
       // alert('debugging');
       this.$el.html(
         _.template($('#butterfly-palette-template').html(), {
-        'colorString' : ""
+        'colorString' : "colors[]=" + this.model.get('palette').join('&colors[]=')
       }));
+      console.log("color[]=" + this.model.get('palette').join('&color[]='));
       return this;
     }
   });
