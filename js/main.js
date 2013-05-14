@@ -1,6 +1,5 @@
 $(function() {
 
-
   //////////////////////////////////
   // MODELS
   //////////////////////////////////
@@ -15,75 +14,7 @@ $(function() {
     }
   });
 
-  var butterfly = new Butterfly();
-
-  // jquery caching
-  var $pageHolder = $('#page-holder');
-
-
-
-  // animation setup
-  $.fn.animateOut = $.fn.fadeOut;
-  $.fn.animateIn = $.fn.fadeIn;
-
-  var animatePageOut = function() {
-    return $pageHolder.animateOut();
-  }
-
-  var animatePageIn = function () {
-    $pageHolder.animateIn();
-  }
-
-  var oldRoute = "";
-
-  // // routing via backbone
-  // var Router = Backbone.Router.extend({
-  //   routes : {
-  //     "palette/eyespots/:spotCount/page/:page" : "palette",
-  //     "eyespots" : "eyespots",
-  //     ":page" : "defaultTransition",
-  //     "*path" : "defaultRoute"
-  //   },
-
-  //   // the eyespots page
-  //   eyespots: function () {
-  //     var init = function() {
-
-
-
-      // };
-  //     this.defaultTransition('eyespots', init);
-  //   },
-
-  //   palette : function () {
-  //     this.defaultTransition('palette');
-  //   },
-
-  //   defaultRoute : function() {
-  //     this.defaultTransition('home');
-  //   },
-
-  //   defaultTransition : function(page, init) {
-  //     console.log("from", oldRoute);
-  //     console.log("to", Backbone.history.fragment);
-
-  //     $pageHolder.animateOut();
-  //     $pageHolder.promise().done(function() {
-  //       // load new content, execute page functions,
-  //       // and bind click handlers
-  //       $pageHolder.html($("#" + page + "-template").html());
-  //       if(typeof init != "undefined")
-  //         init();
-  //       bindNavLinks();
-  //       $pageHolder.animateIn();
-  //     });
-  //     oldRoute = page;
-  //   }
-  // });
-
-  // var router = new Router();
-  // Backbone.history.start(); // let's go
-
+  var butterfly = new Butterfly(); // current butterfly being "created"
 
   //////////////////////////////////
   // VIEWS
@@ -119,9 +50,11 @@ $(function() {
     }
   });
 
+  // simple stuff
   var HomeView = PageView.extend({ template: _.template($('#home-template').html())});
-
   var AboutView = PageView.extend({ template: _.template($('#about-template').html())});
+
+  // several eyespot-page-related views here
 
   // handles update of slider count as well as spot count in model
   var SliderView = Backbone.View.extend({
@@ -185,6 +118,7 @@ $(function() {
   });
 
 
+  // top-level app
   var App = Backbone.View.extend({
 
     el: $('#container'),
@@ -211,22 +145,31 @@ $(function() {
 
   var Router = Backbone.Router.extend({
     routes : {
-      // "palette/eyespots/:spotCount/page/:page" : "palette",
-      // "eyespots" : "eyespots",
-      ":page" : "defaultTransition"
-      // "*path" : "defaultRoute"
+      "palette/eyespots/:spotCount/page/:page" : "palette",
+      ":page" : "defaultTransition",
+      "*path" : "defaultPage"
     },
 
-    defaultTransition : function(page) {
-      var pageViewMap = {
-        home : "homeView",
-        about : "aboutView",
-        eyespots : "eyespotsView",
-        palette : "paletteView",
-      }
-      console.log(page);
-      // debugger;
-      app.showView(app.views[pageViewMap[page]])
+    pageViewMap : {
+      home : "homeView",
+      about : "aboutView",
+      eyespots : "eyespotsView",
+      palette : "paletteView",
+    },
+
+    defaultPage : function () {
+      this.defaultTransition('home')
+    },
+
+    palette : function() {
+      this.defaultTransition('palette');
+    },
+
+    oldRoute : "",
+
+    defaultTransition : function(route) {
+      app.showView(app.views[this.pageViewMap[route]])
+      oldRoute = route;
     }
   });
 
