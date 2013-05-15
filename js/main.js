@@ -276,9 +276,11 @@ $(function() {
       // TODO: fix this mess by switching to divs borders, and rounded corners...same on card page
       i.src = "img/butterflies/" + butterfly.get('id') + ".jpg";
       $reveal = $('#butterfly-reveal');
-      $reveal.css('width', i.width + 24);
-      // $reveal.css('background-size', 'cover');
-      $reveal.css('background', 'url(img/card.svg');
+      $revealFrame = $('#butterfly-reveal-frame');
+      var frameWidth = i.width + 24;
+      var frameHeight = i.height + 24;
+      $reveal.css('width', frameWidth);
+      $reveal.css('height', frameHeight);
       $('#butterfly-reveal').html(i);
     }
   });
