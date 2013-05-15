@@ -168,7 +168,6 @@ $(function() {
     render : function() {
       var children = this.$el.children();
       var that = this;
-      console.log(children);
       // TODO: figure out why children isn't populated here,
       // even though it should be
       if (children.length != 0) {
@@ -242,6 +241,9 @@ $(function() {
         this.$nextBtn.attr('href', getURL(1));
       }
     },
+    clearPalette : function () {
+      delete this._palettePageView;
+    },
     render : function(pageload) {
       if (typeof pageload == "undefined" || pageload == true)
         PageView.prototype.render.apply(this);
@@ -314,6 +316,7 @@ $(function() {
         butterfly.set('eyespot_count', spotCount);
         updateButterfliesWithSpotCount(spotCount);
         app.views.paletteView.setPage(page);
+        app.views.paletteView.clearPalette();
         this.defaultTransition('palette');
       }
     },
