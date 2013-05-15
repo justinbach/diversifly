@@ -269,19 +269,19 @@ $(function() {
     template : _.template($('#butterfly-template').html()),
     render : function () {
       PageView.prototype.render.apply(this);
+      $reveal = $('#butterfly-reveal');
+      $reveal.fadeOut(0);
       var i = new Image();
       $(i).load(function() {
         console.log('image loaded');
+        var frameWidth = i.width + 24;
+        var frameHeight = i.height + 24;
+        $reveal.css('width', frameWidth);
+        $reveal.css('height', frameHeight);
+        $('#butterfly-reveal').html(i);
+        $reveal.fadeIn();
       })
-      // TODO: fix this mess by switching to divs borders, and rounded corners...same on card page
       i.src = "img/butterflies/" + butterfly.get('id') + ".jpg";
-      $reveal = $('#butterfly-reveal');
-      $revealFrame = $('#butterfly-reveal-frame');
-      var frameWidth = i.width + 24;
-      var frameHeight = i.height + 24;
-      $reveal.css('width', frameWidth);
-      $reveal.css('height', frameHeight);
-      $('#butterfly-reveal').html(i);
     }
   });
 
