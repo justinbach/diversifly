@@ -292,6 +292,7 @@ $(function() {
       $(i).load(function() {
         var frameWidth = i.width + 24;
         var frameHeight = i.height + 24;
+        console.log(i.height);
         $reveal.fadeOut(0); // TODO: fix this hacky stuff
         $reveal.css('visibility', 'visible');
         $reveal.css('width', frameWidth);
