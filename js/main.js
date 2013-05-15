@@ -156,6 +156,7 @@ $(function() {
       this.$el = $('.palette-page');
       this.paletteDelay = 50;
       this.paletteFade = 150;
+      this.paletteSlide = 500;
       _.bindAll(this);
       this._butterflyPaletteViews = [];
     },
@@ -170,19 +171,36 @@ $(function() {
       });
     },
     navigateFrom : function (id) {
-      butterfly.id = id;
+      butterfly.set('id', id);
       var children = this.$el.children();
       var that = this;
+      var $palette;
       _(children.get().reverse()).each(function(el, i) {
         var $el = $(el).children().first();
         var position = $el.position();
         $el.css('position', 'absolute');
         $el.css('left', position.left + 'px');
         $el.css('top', position.top + 'px');
-        debugger;
         if($el.attr('href').split('/')[1] != id) {
           $el.fadeOut(that.paletteFade);
+        } else {
+          $palette = $el;
         }
+      });
+      children.promise().done(function () {
+        var $buttons = $('.buttons');
+        var $banner = $('.banner');
+        var $spacer = $('.spacer');
+        // adjust for gutter
+        var centerLeft = that.$el.width() / 2 - $palette.width() / 2 - 35;
+        var centerTop = that.$el.height() / 2 - $palette.height() / 2;
+        $palette.delay(that.paletteSlide).animate(
+          {left : centerLeft, top : centerTop},
+          that.paletteSlide);
+        _([$buttons, $banner, $spacer]).each(function($el) {
+          $el.delay(that.paletteSlide).animate({opacity : 0}, that.paletteSlide);
+        });
+        // router.navigate("butterfly/" + butterfly.get('id'), {trigger: true});
       });
       return false;
     },
@@ -201,6 +219,7 @@ $(function() {
         $link = (e.target.tagName == "IMG" ?
           $(e.target.parentElement) : $(e.target));
         that.navigateFrom($link.attr('href').split('/')[1]);
+        debugger;
         return false;
       });
       // bindNavLinks(this.$el);
@@ -409,6 +428,7 @@ $(function() {
       butterfly = getButterflyByID(id);
       if (this.oldRoute.indexOf("palette") != -1) {
         // complete animation from palette screen
+        console.log('going to butterflies...');
       }
       this.defaultTransition('butterfly');
     },
