@@ -476,6 +476,11 @@ body {
   margin-bottom: 25px;
 }
 
+#butterfly .button {
+  margin: 30px auto;
+  display: block;
+}
+
 #butterfly-goal {
   background: url(../img/goals/reveal.jpg) center;
 }

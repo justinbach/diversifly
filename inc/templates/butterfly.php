@@ -8,11 +8,8 @@
       <div id="butterfly-reveal">
       </div>
       <h2 id='species-name' class="subtitle">LOREM IPSUM DOLOR</h2>
-      <p class="body-copy">Et harum quidem rerum facilis est et expedita distinctio.</p>
+      <p id='country-desc' class="body-copy">Et harum quidem rerum facilis est et expedita distinctio.</p>
     </div>
-    <div class="buttons">
-      <a id="butterfly-prev-button" class="button nav red" href="#"><span>Email This</span></a>
-      <a id="butterfly-next-button" class="button nav yellow" href="home"><span>Start Over</span></a>
-    </div>
+    <a class="button nav yellow" href="home"><span>Start Over</span></a>
   </div>
 </script>

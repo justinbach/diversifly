@@ -10,7 +10,8 @@ $(function() {
       eyespot_count: 1,
       id: 0,
       palette: [],
-      name: ""
+      name: "",
+      country: ""
     }
   });
 
@@ -32,7 +33,8 @@ $(function() {
         eyespot_count : spotCount,
         id : id,
         palette : _(butterfly.palette).map(function (c) { return c.substr(1); }),
-        name : butterfly.name
+        name : butterfly.name,
+        country : butterfly.country
       });
     });
   }
@@ -46,7 +48,8 @@ $(function() {
         return new Butterfly({
           id : id,
           palette : _(record.palette).map(function (c) { return c.substr(1); }),
-          name : record.name
+          name : record.name,
+          country : record.country
         });
       }
     }
@@ -286,7 +289,9 @@ $(function() {
       PageView.prototype.render.apply(this);
       $reveal = $('#butterfly-reveal');
       $species = $('#species-name');
+      $country = $('#country-desc');
       $species.html(butterfly.get('name').toUpperCase());
+      $country.html('Native Country: ' + butterfly.get('country'));
       $reveal.css('visibility', 'hidden');
       var i = new Image();
       $(i).load(function() {
@@ -341,6 +346,7 @@ $(function() {
     routes : {
       "palette/eyespots/:spotCount/page/:page" : "palette",
       "butterfly/:id" : "butterfly",
+      "home" : "home",
       ":page" : "defaultTransition",
       "*path" : "defaultPage"
     },
@@ -355,6 +361,11 @@ $(function() {
 
     defaultPage : function () {
       this.defaultTransition('home')
+    },
+
+    home : function() {
+      butterfly = new Butterfly();
+      this.defaultTransition('home');
     },
 
     palette : function(spotCount, page) {
