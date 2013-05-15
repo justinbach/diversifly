@@ -194,6 +194,7 @@ $(function() {
       // alert('debugging');
       this.$el.html(
         _.template($('#butterfly-palette-template').html(), {
+        'id' : this.model.get('id'),
         'colorString' : "colors[]=" + this.model.get('palette').join('&colors[]=')
       }));
       return this;
@@ -299,6 +300,7 @@ $(function() {
   var Router = Backbone.Router.extend({
     routes : {
       "palette/eyespots/:spotCount/page/:page" : "palette",
+      "butterfly/:id" : "butterfly",
       ":page" : "defaultTransition",
       "*path" : "defaultPage"
     },
@@ -326,6 +328,10 @@ $(function() {
         app.views.paletteView.clearPalette();
         this.defaultTransition('palette');
       }
+    },
+
+    butterfly : function(id) {
+      this.defaultTransition('butterfly');
     },
 
     oldRoute : "",
