@@ -14,7 +14,7 @@
 </script>
 
 <script type="text/template" id="butterfly-palette-template">
-      <a href="#" class="butterfly-palette">
+      <a href="butterfly" class="butterfly-palette nav">
         <img src="img/palette.php?<%= colorString %>" width="224" height="157"/>
       </a>
 </script>

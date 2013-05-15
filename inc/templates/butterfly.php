@@ -12,7 +12,7 @@
     </div>
     <div class="buttons">
       <a id="butterfly-prev-button" class="button nav red" href="#"><span>Email This</span></a>
-      <a id="butterfly-next-button" class="button nav yellow" href="#"><span>Start Over</span></a>
+      <a id="butterfly-next-button" class="button nav yellow" href="home"><span>Start Over</span></a>
     </div>
   </div>
 </script>

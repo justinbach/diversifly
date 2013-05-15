@@ -160,6 +160,7 @@ $(function() {
         that.$el.append($bfly);
         $bfly.fadeOut(0);
       });
+      bindNavLinks(this.$el);
       // debugger;
       _(this.$el.children()).each(function (el, i) {
         $(el).delay(that.paletteDelay * i).fadeIn(that.paletteFade);
