@@ -77,10 +77,6 @@ $(function() {
   // generic view for page support
   var PageView = Backbone.View.extend({
     el: $('#page-holder'),
-    initialize : function () {
-      // console.log('initialize');
-    },
-
     render : function() {
       this.$el.html(this.template());
       bindNavLinks(this.$el);
@@ -187,7 +183,7 @@ $(function() {
           $palette = $el;
         }
       });
-      children.promise().done(function () {
+      children.promise().done(function() {
         var $buttons = $('.buttons');
         var $banner = $('.banner');
         var $spacer = $('.spacer');
@@ -200,7 +196,9 @@ $(function() {
         _([$buttons, $banner, $spacer]).each(function($el) {
           $el.delay(that.paletteSlide).animate({opacity : 0}, that.paletteSlide);
         });
-        // router.navigate("butterfly/" + butterfly.get('id'), {trigger: true});
+        $palette.promise().done(function() {
+          router.navigate("butterfly/" + butterfly.get('id'), {trigger: true});
+        })
       });
       return false;
     },
@@ -219,7 +217,6 @@ $(function() {
         $link = (e.target.tagName == "IMG" ?
           $(e.target.parentElement) : $(e.target));
         that.navigateFrom($link.attr('href').split('/')[1]);
-        debugger;
         return false;
       });
       // bindNavLinks(this.$el);
@@ -324,15 +321,44 @@ $(function() {
 
   // butterfly page stuff
   var ButterflyView = PageView.extend({
+
     initialize : function() {
       _.bindAll(this);
+      // TODO: globalize animation times
+      this.paletteSlide = 500;
     },
     template : _.template($('#butterfly-template').html()),
+    renderWithID : function() {
+      PageView.prototype.render.apply(this);
+      var that = this;
+      // hide all the usual elements
+      var $banner = $(".banner");
+      // TODO: use IDs, not classes
+      var $spacer = $(".spacer");
+      var $button = $(".button");
+      var $reveal = $('#butterfly-reveal');
+      var $species = $('#species-name');
+      var $country = $('#country-desc');
+      var $butterflyPage = $('.butterfly-page');
+      var fadeItems = [$banner, $spacer, $button, $reveal, $species, $country];
+      _(fadeItems).each(function(el) {
+        $(el).css('opacity', 0);
+      })
+      // regenerate the palette from the current butterfly id
+      var bfly = getButterflyByID(butterfly.get('id'));
+      var bflyPaletteView = new ButterflyPaletteView({
+        model : bfly
+      });
+      $butterflyPage.html(bflyPaletteView.render().$el.html());
+      _(fadeItems).each(function($el) {
+        $el.animate({opacity : 1}, that.paletteSlide);
+      });
+    },
     render : function () {
       PageView.prototype.render.apply(this);
-      $reveal = $('#butterfly-reveal');
-      $species = $('#species-name');
-      $country = $('#country-desc');
+      var $reveal = $('#butterfly-reveal');
+      var $species = $('#species-name');
+      var $country = $('#country-desc');
       $species.html(butterfly.get('name').toUpperCase());
       $country.html('Native Country: ' + butterfly.get('country'));
       $reveal.css('visibility', 'hidden');
@@ -340,7 +366,6 @@ $(function() {
       $(i).load(function() {
         var frameWidth = i.width + 24;
         var frameHeight = i.height + 24;
-        console.log(i.height);
         $reveal.fadeOut(0); // TODO: fix this hacky stuff
         $reveal.css('visibility', 'visible');
         $reveal.css('width', frameWidth);
@@ -372,10 +397,12 @@ $(function() {
     showView : function (view) {
       $viewEl = this.$el;
       $viewEl.fadeOut();
-      v = this;
       $viewEl.promise().done(function() {
         $viewEl.html(view.render()).fadeIn();
       });
+    },
+    snapViewWithFn : function (view, fn) {
+      this.$el.html(view[fn]());
     }
   });
 
@@ -428,9 +455,11 @@ $(function() {
       butterfly = getButterflyByID(id);
       if (this.oldRoute.indexOf("palette") != -1) {
         // complete animation from palette screen
-        console.log('going to butterflies...');
+        app.snapViewWithFn(app.views.butterflyView, "renderWithID");
+        this.oldRoute = 'butterfly';
+      } else {
+        this.defaultTransition('butterfly');
       }
-      this.defaultTransition('butterfly');
     },
 
     oldRoute : "",

@@ -419,7 +419,7 @@ body {
   position: relative;
 }
 
-.palette-page a {
+.palette-page a, .butterfly-page a {
   width: 296px;
   height: 196px;
   display: inline-block;
@@ -433,7 +433,7 @@ body {
   border-radius: 10px;
 }
 
-.palette-page a img {
+.palette-page a img, .butterfly-page a img {
   display: block;
   margin: 20px auto;
 }
@@ -454,7 +454,16 @@ body {
 
 .butterfly-page {
   width: 1334px;
+  height: 452px;
   margin: 27px auto 10px auto;
+  position: relative;
+}
+
+.butterfly-page a {
+  pointer-events: none;
+  position: absolute;
+  top: 133px;
+  left: 489px;
 }
 
 #butterfly-reveal {
