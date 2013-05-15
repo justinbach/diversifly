@@ -416,6 +416,7 @@ body {
   width: 1334px;
   height: 452px;
   margin: 27px auto 10px auto;
+  position: relative;
 }
 
 .palette-page a {

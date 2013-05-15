@@ -169,6 +169,23 @@ $(function() {
         }));
       });
     },
+    navigateFrom : function (id) {
+      butterfly.id = id;
+      var children = this.$el.children();
+      var that = this;
+      _(children.get().reverse()).each(function(el, i) {
+        var $el = $(el).children().first();
+        var position = $el.position();
+        $el.css('position', 'absolute');
+        $el.css('left', position.left + 'px');
+        $el.css('top', position.top + 'px');
+        debugger;
+        if($el.attr('href').split('/')[1] != id) {
+          $el.fadeOut(that.paletteFade);
+        }
+      });
+      return false;
+    },
     showPalettes : function () {
       // animate in the new page
       var that = this;
@@ -178,8 +195,15 @@ $(function() {
         that.$el.append($bfly);
         $bfly.fadeOut(0);
       });
-      bindNavLinks(this.$el);
-      // debugger;
+      // set up click handler for animation
+      this.$el.click(function(e) {
+        // it's either the image or its parent
+        $link = (e.target.tagName == "IMG" ?
+          $(e.target.parentElement) : $(e.target));
+        that.navigateFrom($link.attr('href').split('/')[1]);
+        return false;
+      });
+      // bindNavLinks(this.$el);
       _(this.$el.children()).each(function (el, i) {
         $(el).delay(that.paletteDelay * i).fadeIn(that.paletteFade);
       });
@@ -383,6 +407,9 @@ $(function() {
 
     butterfly : function(id) {
       butterfly = getButterflyByID(id);
+      if (this.oldRoute.indexOf("palette") != -1) {
+        // complete animation from palette screen
+      }
       this.defaultTransition('butterfly');
     },
 
