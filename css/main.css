@@ -450,11 +450,17 @@ body {
 }
 
 #butterfly-reveal {
-  height: 450px;
+  height: 439px;
   width: 680px;
-  background: url(../img/card.svg);
-  background-size: cover;
+  /*background: url(../img/card.svg);*/
+  background-size: 100% 100%;
   margin: auto auto 10px;
+  padding-top: 11px;
+  text-align: center;
+}
+
+#butterfly-reveal img {
+  display: block;
 }
 
 #butterfly .body-copy {

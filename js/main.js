@@ -227,7 +227,7 @@ $(function() {
         newURL = hashArr.slice(0, hashArr.length - 1).join('/') + '/' + newPage;
         return newURL;
       }
-      this.$prevBtn = $('#palette-prev-button');
+      this.$prevBtn = $('#palette-prev-button'); // TODO: cache earlier
       this.$nextBtn = $('#palette-next-button');
       var totalPages = Math.floor(butterfliesWithSpotCount.length / pageLength);
       if(this.page == 1) {
@@ -262,7 +262,26 @@ $(function() {
   });
 
   // butterfly page stuff
-  var ButterflyView = PageView.extend({ template: _.template($('#butterfly-template').html())});
+  var ButterflyView = PageView.extend({
+    initialize : function() {
+      _.bindAll(this);
+    },
+    template : _.template($('#butterfly-template').html()),
+    render : function () {
+      PageView.prototype.render.apply(this);
+      var i = new Image();
+      $(i).load(function() {
+        console.log('image loaded');
+      })
+      // TODO: fix this mess by switching to divs borders, and rounded corners...same on card page
+      i.src = "img/butterflies/" + butterfly.get('id') + ".jpg";
+      $reveal = $('#butterfly-reveal');
+      $reveal.css('width', i.width + 24);
+      // $reveal.css('background-size', 'cover');
+      $reveal.css('background', 'url(img/card.svg');
+      $('#butterfly-reveal').html(i);
+    }
+  });
 
 
 
@@ -331,6 +350,7 @@ $(function() {
     },
 
     butterfly : function(id) {
+      butterfly.set('id', id);
       this.defaultTransition('butterfly');
     },
 
