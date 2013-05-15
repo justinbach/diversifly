@@ -58,9 +58,7 @@ $(function() {
 
   // generic view for page support
   var PageView = Backbone.View.extend({
-
     el: $('#page-holder'),
-
     initialize : function () {
       // console.log('initialize');
     },
@@ -138,9 +136,13 @@ $(function() {
     el : $('.palette-page'),
     initialize : function() {
       this.$el = $('.palette-page');
-      this.paletteDelay = 100;
-      this.paletteFade = 300;
+      this.paletteDelay = 50;
+      this.paletteFade = 150;
       _.bindAll(this);
+      this._butterflyPaletteViews = [];
+    },
+    setCollection : function (col) {
+      this.collection = col;
       this._butterflyPaletteViews = [];
       var that = this;
       this.collection.each(function(bfly) {
@@ -153,31 +155,33 @@ $(function() {
       // animate in the new page
       var that = this;
       _(this._butterflyPaletteViews).each(function(bflyView) {
-        that.$el.append(bflyView.render().$el);
+        // debugger;
+        $bfly = bflyView.render().$el;
+        that.$el.append($bfly);
+        $bfly.fadeOut(0);
       });
-    },
-    hidePalettes : function () {
-
+      // debugger;
+      _(this.$el.children()).each(function (el, i) {
+        $(el).delay(that.paletteDelay * i).fadeIn(that.paletteFade);
+      });
     },
     render : function() {
       var children = this.$el.children();
       var that = this;
       console.log(children);
-      debugger;
       // TODO: figure out why children isn't populated here,
       // even though it should be
       if (children.length != 0) {
         // animate out the old page
-        console.log('animating...');
-        _(children.reverse()).each(function(el, i) {
-          $(el).delay(that.thumbFadeDelay * i).fadeOut(that.thumbFadeDelay);
+        _(children.get().reverse()).each(function(el, i) {
+          $(el).delay(that.paletteDelay * i).fadeOut(that.paletteFade);
         });
         children.promise().done(function() {
-          this.$el.empty();
-          this.showPalettes();
+          that.$el.empty();
+          that.showPalettes();
         });
       } else {
-        this.showPalettes();
+        that.showPalettes();
       }
     }
   });
@@ -211,7 +215,7 @@ $(function() {
     },
     updatePagination : function(p) {
       this.setPage(p);
-      this.render();
+      this.render(false); // don't force total refresh
     },
     setPaginationButtons : function() {
       var that = this;
@@ -238,15 +242,18 @@ $(function() {
         this.$nextBtn.attr('href', getURL(1));
       }
     },
-    render : function() {
-      PageView.prototype.render.apply(this);
+    render : function(pageload) {
+      if (typeof pageload == "undefined" || pageload == true)
+        PageView.prototype.render.apply(this);
       // the router ensures that the butterfly model has the right spot count
       var start = this.page * pageLength - 1;
-      var palettePageView = new PalettePageView({
-        collection : new Butterflies(butterfliesWithSpotCount.slice(start, start + pageLength))
-      });
+      if(typeof this._palettePageView == "undefined")
+        this._palettePageView = new PalettePageView();
+      this._palettePageView.setCollection(
+        new Butterflies(butterfliesWithSpotCount.slice(start, start + pageLength)));
+
       this.setPaginationButtons();
-      palettePageView.render();
+      this._palettePageView.render();
     }
   });
 
