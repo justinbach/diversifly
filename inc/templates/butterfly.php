@@ -7,7 +7,7 @@
     <div class="butterfly-page">
       <div id="butterfly-reveal">
       </div>
-      <h2 class="subtitle">LOREM IPSUM DOLOR</h2>
+      <h2 id='species-name' class="subtitle">LOREM IPSUM DOLOR</h2>
       <p class="body-copy">Et harum quidem rerum facilis est et expedita distinctio.</p>
     </div>
     <div class="buttons">

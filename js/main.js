@@ -18,7 +18,7 @@ $(function() {
 
   var Butterflies = Backbone.Collection.extend({
     model: Butterfly
-  })
+  });
 
   var butterflyPage = new Butterflies(); // active page for palette selection
   var pageLength = 8; // number of butterflies on a page
@@ -27,15 +27,30 @@ $(function() {
   var updateButterfliesWithSpotCount = function(spotCount) {
     butterfliesWithSpotCount.reset();
     IDsOfInterest = diversifly_data[spotCount - 1]; // 0-indexed
-    _(IDsOfInterest).each(function(palette, id) {
+    _(IDsOfInterest).each(function(butterfly, id) {
       butterfliesWithSpotCount.add({
         eyespot_count : spotCount,
         id : id,
-        palette : _(palette).map(function (c) { return c.substr(1); })
+        palette : _(butterfly.palette).map(function (c) { return c.substr(1); }),
+        name : butterfly.name
       });
     });
   }
 
+  var getButterflyByID = function(id) {
+    for (var i = 0; i < diversifly_data.length; i++) {
+      if (diversifly_data[i].hasOwnProperty(id)) {
+        // match
+        var record = diversifly_data[i][id];
+
+        return new Butterfly({
+          id : id,
+          palette : _(record.palette).map(function (c) { return c.substr(1); }),
+          name : record.name
+        });
+      }
+    }
+  }
 
   //////////////////////////////////
   // VIEWS
@@ -270,10 +285,11 @@ $(function() {
     render : function () {
       PageView.prototype.render.apply(this);
       $reveal = $('#butterfly-reveal');
+      $species = $('#species-name');
+      $species.html(butterfly.get('name').toUpperCase());
       $reveal.fadeOut(0);
       var i = new Image();
       $(i).load(function() {
-        console.log('image loaded');
         var frameWidth = i.width + 24;
         var frameHeight = i.height + 24;
         $reveal.css('width', frameWidth);
@@ -352,7 +368,7 @@ $(function() {
     },
 
     butterfly : function(id) {
-      butterfly.set('id', id);
+      butterfly = getButterflyByID(id);
       this.defaultTransition('butterfly');
     },
 
