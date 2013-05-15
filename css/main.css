@@ -420,9 +420,14 @@ body {
   width: 296px;
   height: 196px;
   display: inline-block;
-  background: url(../img/card.svg);
+  background: #fffef7;
+  border: #d6d6cc 5px solid;
   margin: 0 0 30px 30px;
   float: left;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 10px;
 }
 
 .palette-page a img {
