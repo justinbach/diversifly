@@ -434,6 +434,37 @@ body {
   background: url(../img/goals/palettes_cards.jpg) center;
 }
 
+/* butterfly page stuff */
+#butterfly {
+  padding-top: 94px;
+  width: 1334px;
+}
+
+#butterfly .banner {
+  margin-top: 26px;
+}
+
+.butterfly-page {
+  width: 1334px;
+  margin: 27px auto 10px auto;
+}
+
+#butterfly-reveal {
+  height: 450px;
+  width: 680px;
+  background: url(../img/card.svg);
+  background-size: cover;
+  margin: auto auto 10px;
+}
+
+#butterfly .body-copy {
+  margin-bottom: 25px;
+}
+
+#butterfly-goal {
+  background: url(../img/goals/reveal.jpg) center;
+}
+
 
 
 

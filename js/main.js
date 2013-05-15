@@ -259,6 +259,10 @@ $(function() {
     }
   });
 
+  // butterfly page stuff
+  var ButterflyView = PageView.extend({ template: _.template($('#butterfly-template').html())});
+
+
 
   // top-level app
   var App = Backbone.View.extend({
@@ -270,7 +274,8 @@ $(function() {
         homeView : new HomeView(),
         aboutView : new AboutView(),
         eyespotsView : new EyespotsView(),
-        paletteView : new PaletteView()
+        paletteView : new PaletteView(),
+        butterflyView : new ButterflyView()
       };
       this.showView(this.views.homeView);
     },
@@ -302,6 +307,7 @@ $(function() {
       about : "aboutView",
       eyespots : "eyespotsView",
       palette : "paletteView",
+      butterfly : "butterflyView"
     },
 
     defaultPage : function () {
