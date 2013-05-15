@@ -138,7 +138,9 @@ $(function() {
     el : $('.palette-page'),
     initialize : function() {
       this.$el = $('.palette-page');
-      _.bindAll(this, ['render']);
+      this.paletteDelay = 100;
+      this.paletteFade = 300;
+      _.bindAll(this);
       this._butterflyPaletteViews = [];
       var that = this;
       this.collection.each(function(bfly) {
@@ -147,12 +149,36 @@ $(function() {
         }));
       });
     },
-    render : function() {
+    showPalettes : function () {
+      // animate in the new page
       var that = this;
-      this.$el.empty();
       _(this._butterflyPaletteViews).each(function(bflyView) {
         that.$el.append(bflyView.render().$el);
       });
+    },
+    hidePalettes : function () {
+
+    },
+    render : function() {
+      var children = this.$el.children();
+      var that = this;
+      console.log(children);
+      debugger;
+      // TODO: figure out why children isn't populated here,
+      // even though it should be
+      if (children.length != 0) {
+        // animate out the old page
+        console.log('animating...');
+        _(children.reverse()).each(function(el, i) {
+          $(el).delay(that.thumbFadeDelay * i).fadeOut(that.thumbFadeDelay);
+        });
+        children.promise().done(function() {
+          this.$el.empty();
+          this.showPalettes();
+        });
+      } else {
+        this.showPalettes();
+      }
     }
   });
 
@@ -190,7 +216,6 @@ $(function() {
     setPaginationButtons : function() {
       var that = this;
       var getURL = function (delta) {
-        // debugger;
         newPage = parseInt(that.page) + parseInt(delta, 10);
         curHash = document.location.hash.substr(1);
         hashArr = curHash.split('/');
@@ -205,20 +230,16 @@ $(function() {
       } else {
         this.$prevBtn.removeClass('disabled').addClass('red');
         this.$prevBtn.attr('href', getURL(-1));
-        console.log(getURL(-1));
       }
       if(this.page == totalPages) {
         this.$nextBtn.removeClass('yellow').addClass('disabled');
       } else {
         this.$nextBtn.removeClass('disabled').addClass('yellow');
         this.$nextBtn.attr('href', getURL(1));
-        // debugger;
-        console.log(getURL(1));
       }
     },
     render : function() {
       PageView.prototype.render.apply(this);
-      console.log('page rendered...');
       // the router ensures that the butterfly model has the right spot count
       var start = this.page * pageLength - 1;
       var palettePageView = new PalettePageView({
