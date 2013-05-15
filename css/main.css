@@ -241,6 +241,13 @@ body {
   position: relative;
   background-size: 186px 190px;
   color: white;
+  /* don't let users select button text */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .button.red {
@@ -406,7 +413,7 @@ body {
 .palette-page {
   width: 1334px;
   height: 452px;
-  margin: auto;
+  margin: 27px auto 10px auto;
 }
 
 .palette-page a {
@@ -418,8 +425,13 @@ body {
   float: left;
 }
 
+.palette-page a img {
+  display: block;
+  margin: 20px auto;
+}
+
 #palette-goal {
-  background: url(../img/goals/palette.jpg) center;
+  background: url(../img/goals/palettes_cards.jpg) center;
 }
 
 
