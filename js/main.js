@@ -287,11 +287,13 @@ $(function() {
       $reveal = $('#butterfly-reveal');
       $species = $('#species-name');
       $species.html(butterfly.get('name').toUpperCase());
-      $reveal.fadeOut(0);
+      $reveal.css('visibility', 'hidden');
       var i = new Image();
       $(i).load(function() {
         var frameWidth = i.width + 24;
         var frameHeight = i.height + 24;
+        $reveal.fadeOut(0); // TODO: fix this hacky stuff
+        $reveal.css('visibility', 'visible');
         $reveal.css('width', frameWidth);
         $reveal.css('height', frameHeight);
         $('#butterfly-reveal').html(i);
