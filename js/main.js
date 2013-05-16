@@ -1,5 +1,47 @@
 $(function() {
 
+  // helper to load images using jquery deferred objects
+  // see http://aboutcode.net/2013/01/09/load-images-with-jquery-deferred.html
+  $.loadImage = function(url) {
+    // Define a "worker" function that should eventually resolve or reject the deferred object.
+    var loadImage = function(deferred) {
+      var image = new Image();
+
+      // Set up event handlers to know when the image has loaded
+      // or fails to load due to an error or abort.
+      image.onload = loaded;
+      image.onerror = errored; // URL returns 404, etc
+      image.onabort = errored; // IE may call this if user clicks "Stop"
+
+      // Setting the src property begins loading the image.
+      image.src = url;
+
+      function loaded() {
+        unbindEvents();
+        // Calling resolve means the image loaded sucessfully and is ready to use.
+        deferred.resolve(image);
+      }
+      function errored() {
+        unbindEvents();
+        // Calling reject means we failed to load the image (e.g. 404, server offline, etc).
+        deferred.reject(image);
+      }
+      function unbindEvents() {
+        // Ensures the event callbacks only get called once.
+        image.onload = null;
+        image.onerror = null;
+        image.onabort = null;
+      }
+    };
+
+    // Create the deferred object that will contain the loaded image.
+    // We don't want callers to have access to the resolve() and reject() methods,
+    // so convert to "read-only" by calling `promise()`.
+    return $.Deferred(loadImage).promise();
+  };
+
+
+
   //////////////////////////////////
   // MODELS
   //////////////////////////////////
@@ -64,6 +106,7 @@ $(function() {
   var paletteDelay = 100;
   var paletteSlide = 750;
   var viewFade = 500;
+  var revealFade = 1000;
 
   // helper for initializing navigation links
   var bindNavLinks = function ($container) {
@@ -361,14 +404,14 @@ $(function() {
       var bflyPaletteView = new ButterflyPaletteRevealView({
         model : bfly
       });
-      $butterflyPage.html(bflyPaletteView.render().$el.html());
+      $butterflyPage.prepend(bflyPaletteView.render().$el.html());
       _(firstFadeItems).each(function($el) {
         $el.animate({opacity : 1}, paletteSlide);
       });
       // load and flip
-      var i = new Image();
       var src = "img/butterflies/" + butterfly.get('id') + ".jpg";
-       $(i).load(function() {
+      var iPromise = $.loadImage(src);
+      $.when(iPromise, $banner).done(function(i) {
         var $cardReveal = $('#rotating-card a');
         var frameWidth = i.width + 24;
         var frameHeight = i.height + 24;
@@ -377,11 +420,26 @@ $(function() {
         $cardReveal.css('height', frameHeight);
         $cardReveal.css('left', '50%');
         $cardReveal.css('margin-left', (-1 * frameWidth / 2) + 'px');
-        console.log((-1 * frameWidth / 2) + 'px');
         $('#rotating-card a.back img').attr('src', src)
         $('#rotating-card').addClass('flip');
+        // listen for end of CSS animation
+        var revealed = false;
+        $cardReveal.bind('transitionend webkitTransitionEnd', function() {
+          if (revealed)
+            return;
+          revealed = true;
+          $species.html(butterfly.get('name').toUpperCase());
+          $country.html('Native Country: ' + butterfly.get('country'));
+          $species.animate({opacity : 1}, revealFade);
+          $species.promise().done(function() {
+            $country.animate({opacity : 1}, revealFade);
+            $country.promise().done(function() {
+              $button.animate({opacity : 1}, revealFade);
+            });
+          });
+
+        });
       });
-      i.src = src;
     },
     render : function () {
       PageView.prototype.render.apply(this);
