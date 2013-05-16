@@ -475,7 +475,7 @@ body {
               left 1s ease-in,
               border 1s ease-in,
               border-radius 1s ease-in,
-              -webkit-transform 0.2s linear;
+              -webkit-transform 0.18s linear;
 }
 
 .butterfly-page a.front {

@@ -426,33 +426,27 @@ $(function() {
         $rotatingCard.addClass('flip');
         $rotatingCard.addClass('full-size');
         // listen for end of CSS animation
-        var revealed = false;
-        var transCount = 0;
+        var flipCount = 0;
         $('#rotating-card a.back').bind('transitionend', function(e) {
-          debugger;
           // depending on the state of things, we're either
           // flipping the card or revealing the species and genus name
-          if (transCount++ <= 3) {
-            if ($rotatingCard.hasClass('flip'))
-              $rotatingCard.removeClass('flip');
-            else
-              $rotatingCard.addClass('flip');
+          if (e.originalEvent.propertyName = "-webkit-transform" && flipCount < 4) {
+            $rotatingCard.toggleClass('flip');
+            flipCount++;
             return;
           }
 
-          if (revealed)
-            return;
-          revealed = true;
-          $species.html(butterfly.get('name').toUpperCase());
-          $country.html('Native Country: ' + butterfly.get('country'));
-          $species.animate({opacity : 1}, revealFade);
-          $species.promise().done(function() {
-            $country.animate({opacity : 1}, revealFade);
-            $country.promise().done(function() {
-              $button.animate({opacity : 1}, revealFade);
+          if (e.originalEvent.propertyName = "width") {
+            $species.html(butterfly.get('name').toUpperCase());
+            $country.html('Native Country: ' + butterfly.get('country'));
+            $species.animate({opacity : 1}, revealFade);
+            $species.promise().done(function() {
+              $country.animate({opacity : 1}, revealFade);
+              $country.promise().done(function() {
+                $button.animate({opacity : 1}, revealFade);
+              });
             });
-          });
-
+          }
         });
       });
     },
