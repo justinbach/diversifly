@@ -439,10 +439,8 @@ $(function() {
           if (e.originalEvent.propertyName = "width") {
             $species.html(butterfly.get('name').toUpperCase());
             $country.html('Native Country: ' + butterfly.get('country'));
-            $species.animate({opacity : 1}, revealFade);
-            $species.promise().done(function() {
-              $country.animate({opacity : 1}, revealFade);
-              $country.promise().done(function() {
+            $species.animate({opacity : 1}, revealFade, function() {
+              $country.animate({opacity : 1}, revealFade, function() {
                 $button.animate({opacity : 1}, revealFade);
               });
             });
