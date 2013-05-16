@@ -418,13 +418,28 @@ $(function() {
         $cardReveal.css('visibility', 'visible');
         $cardReveal.css('width', frameWidth);
         $cardReveal.css('height', frameHeight);
+        $cardReveal.css('top', 0);
         $cardReveal.css('left', '50%');
         $cardReveal.css('margin-left', (-1 * frameWidth / 2) + 'px');
+        $rotatingCard = $('#rotating-card');
         $('#rotating-card a.back img').attr('src', src)
-        $('#rotating-card').addClass('flip');
+        $rotatingCard.addClass('flip');
+        $rotatingCard.addClass('full-size');
         // listen for end of CSS animation
         var revealed = false;
-        $cardReveal.bind('transitionend webkitTransitionEnd', function() {
+        var transCount = 0;
+        $('#rotating-card a.back').bind('transitionend', function(e) {
+          debugger;
+          // depending on the state of things, we're either
+          // flipping the card or revealing the species and genus name
+          if (transCount++ <= 3) {
+            if ($rotatingCard.hasClass('flip'))
+              $rotatingCard.removeClass('flip');
+            else
+              $rotatingCard.addClass('flip');
+            return;
+          }
+
           if (revealed)
             return;
           revealed = true;
