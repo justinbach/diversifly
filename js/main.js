@@ -236,13 +236,13 @@ $(function() {
         // adjust for gutter
         var centerLeft = that.$el.width() / 2 - $palette.width() / 2 - 35;
         var centerTop = that.$el.height() / 2 - $palette.height() / 2;
-        $palette.delay(paletteSlide).animate(
+        $palette.animate(
           {left : centerLeft, top : centerTop},
           paletteSlide);
         _([$buttons, $banner, $spacer]).each(function($el) {
           $el.delay(paletteSlide).animate({opacity : 0}, paletteSlide);
         });
-        $palette.promise().done(function() {
+        $banner.promise().done(function() {
           router.navigate("butterfly/" + butterfly.get('id'), {trigger: true});
         })
       });
