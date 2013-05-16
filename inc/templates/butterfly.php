@@ -13,3 +13,14 @@
     <a class="button nav yellow" href="home"><span>Start Over</span></a>
   </div>
 </script>
+
+<script type="text/template" id="butterfly-palette-reveal-template">
+    <div id="rotating-card">
+      <a href="butterfly/<%= id %>" class="butterfly-palette nav front">
+        <img src="img/palette.php?<%= colorString %>" width="224" height="157"/>
+      </a>
+      <a href="butterfly/<%= id %>" class="butterfly-palette nav back">
+        <img src="img/palette.php" />
+      </a>
+    </div>
+</script>

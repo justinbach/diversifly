@@ -63,7 +63,7 @@ $(function() {
   var paletteFade = 150;
   var paletteDelay = 100;
   var paletteSlide = 750;
-  var viewFade = 1000;
+  var viewFade = 500;
 
   // helper for initializing navigation links
   var bindNavLinks = function ($container) {
@@ -322,6 +322,17 @@ $(function() {
   });
 
   // butterfly page stuff
+  var ButterflyPaletteRevealView = ButterflyPaletteView.extend({
+    render: function() {
+      this.$el.html(
+        _.template($('#butterfly-palette-reveal-template').html(), {
+        'id' : this.model.get('id'),
+        'colorString' : "colors[]=" + this.model.get('palette').join('&colors[]=')
+      }));
+      return this;
+    },
+  });
+
   var ButterflyView = PageView.extend({
 
     initialize : function() {
@@ -347,13 +358,30 @@ $(function() {
       })
       // regenerate the palette from the current butterfly id
       var bfly = getButterflyByID(butterfly.get('id'));
-      var bflyPaletteView = new ButterflyPaletteView({
+      var bflyPaletteView = new ButterflyPaletteRevealView({
         model : bfly
       });
       $butterflyPage.html(bflyPaletteView.render().$el.html());
       _(firstFadeItems).each(function($el) {
         $el.animate({opacity : 1}, paletteSlide);
       });
+      // load and flip
+      var i = new Image();
+      var src = "img/butterflies/" + butterfly.get('id') + ".jpg";
+       $(i).load(function() {
+        var $cardReveal = $('#rotating-card a');
+        var frameWidth = i.width + 24;
+        var frameHeight = i.height + 24;
+        $cardReveal.css('visibility', 'visible');
+        $cardReveal.css('width', frameWidth);
+        $cardReveal.css('height', frameHeight);
+        $cardReveal.css('left', '50%');
+        $cardReveal.css('margin-left', (-1 * frameWidth / 2) + 'px');
+        console.log((-1 * frameWidth / 2) + 'px');
+        $('#rotating-card a.back img').attr('src', src)
+        $('#rotating-card').addClass('flip');
+      });
+      i.src = src;
     },
     render : function () {
       PageView.prototype.render.apply(this);
