@@ -59,6 +59,12 @@ $(function() {
   // VIEWS
   //////////////////////////////////
 
+  // a few global animation settings
+  var paletteFade = 150;
+  var paletteDelay = 100;
+  var paletteSlide = 750;
+  var viewFade = 1000;
+
   // helper for initializing navigation links
   var bindNavLinks = function ($container) {
     $container.find('a.nav').each(function(index, el) {
@@ -150,9 +156,6 @@ $(function() {
     el : $('.palette-page'),
     initialize : function() {
       this.$el = $('.palette-page');
-      this.paletteDelay = 50;
-      this.paletteFade = 150;
-      this.paletteSlide = 500;
       _.bindAll(this);
       this._butterflyPaletteViews = [];
     },
@@ -178,7 +181,7 @@ $(function() {
         $el.css('left', position.left + 'px');
         $el.css('top', position.top + 'px');
         if($el.attr('href').split('/')[1] != id) {
-          $el.fadeOut(that.paletteFade);
+          $el.fadeOut(paletteFade);
         } else {
           $palette = $el;
         }
@@ -190,11 +193,11 @@ $(function() {
         // adjust for gutter
         var centerLeft = that.$el.width() / 2 - $palette.width() / 2 - 35;
         var centerTop = that.$el.height() / 2 - $palette.height() / 2;
-        $palette.delay(that.paletteSlide).animate(
+        $palette.delay(paletteSlide).animate(
           {left : centerLeft, top : centerTop},
-          that.paletteSlide);
+          paletteSlide);
         _([$buttons, $banner, $spacer]).each(function($el) {
-          $el.delay(that.paletteSlide).animate({opacity : 0}, that.paletteSlide);
+          $el.delay(paletteSlide).animate({opacity : 0}, paletteSlide);
         });
         $palette.promise().done(function() {
           router.navigate("butterfly/" + butterfly.get('id'), {trigger: true});
@@ -221,7 +224,7 @@ $(function() {
       });
       // bindNavLinks(this.$el);
       _(this.$el.children()).each(function (el, i) {
-        $(el).delay(that.paletteDelay * i).fadeIn(that.paletteFade);
+        $(el).delay(paletteDelay * i).fadeIn(paletteFade);
       });
     },
     render : function() {
@@ -232,7 +235,7 @@ $(function() {
       if (children.length != 0) {
         // animate out the old page
         _(children.get().reverse()).each(function(el, i) {
-          $(el).delay(that.paletteDelay * i).fadeOut(that.paletteFade);
+          $(el).delay(paletteDelay * i).fadeOut(paletteFade);
         });
         children.promise().done(function() {
           that.$el.empty();
@@ -249,7 +252,6 @@ $(function() {
       _.bind(this, 'render');
     },
     render : function () {
-      // alert('debugging');
       this.$el.html(
         _.template($('#butterfly-palette-template').html(), {
         'id' : this.model.get('id'),
@@ -324,8 +326,6 @@ $(function() {
 
     initialize : function() {
       _.bindAll(this);
-      // TODO: globalize animation times
-      this.paletteSlide = 500;
     },
     template : _.template($('#butterfly-template').html()),
     renderWithID : function() {
@@ -341,6 +341,7 @@ $(function() {
       var $country = $('#country-desc');
       var $butterflyPage = $('.butterfly-page');
       var fadeItems = [$banner, $spacer, $button, $reveal, $species, $country];
+      var firstFadeItems = [$banner, $spacer];
       _(fadeItems).each(function(el) {
         $(el).css('opacity', 0);
       })
@@ -350,8 +351,8 @@ $(function() {
         model : bfly
       });
       $butterflyPage.html(bflyPaletteView.render().$el.html());
-      _(fadeItems).each(function($el) {
-        $el.animate({opacity : 1}, that.paletteSlide);
+      _(firstFadeItems).each(function($el) {
+        $el.animate({opacity : 1}, paletteSlide);
       });
     },
     render : function () {
@@ -396,9 +397,9 @@ $(function() {
     },
     showView : function (view) {
       $viewEl = this.$el;
-      $viewEl.fadeOut();
+      $viewEl.fadeOut(viewFade);
       $viewEl.promise().done(function() {
-        $viewEl.html(view.render()).fadeIn();
+        $viewEl.html(view.render()).fadeIn(viewFade);
       });
     },
     snapViewWithFn : function (view, fn) {

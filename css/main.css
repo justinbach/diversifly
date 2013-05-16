@@ -454,7 +454,7 @@ body {
 
 .butterfly-page {
   width: 1334px;
-  height: 452px;
+  min-height: 452px;
   margin: 27px auto 10px auto;
   position: relative;
 }
