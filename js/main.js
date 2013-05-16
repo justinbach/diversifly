@@ -104,7 +104,7 @@ $(function() {
   // a few global animation settings
   var paletteFade = 150;
   var paletteDelay = 100;
-  var paletteSlide = 750;
+  var paletteSlide = 500;
   var viewFade = 500;
   var revealFade = 1000;
 
