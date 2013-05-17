@@ -252,7 +252,6 @@ $(function() {
       // animate in the new page
       var that = this;
       _(this._butterflyPaletteViews).each(function(bflyView) {
-        // debugger;
         $bfly = bflyView.render().$el;
         that.$el.append($bfly);
         $bfly.fadeOut(0);
@@ -265,7 +264,6 @@ $(function() {
         that.navigateFrom($link.attr('href').split('/')[1]);
         return false;
       });
-      // bindNavLinks(this.$el);
       _(this.$el.children()).each(function (el, i) {
         $(el).delay(paletteDelay * i).fadeIn(paletteFade);
       });
@@ -273,8 +271,6 @@ $(function() {
     render : function() {
       var children = this.$el.children();
       var that = this;
-      // TODO: figure out why children isn't populated here,
-      // even though it should be
       if (children.length != 0) {
         // animate out the old page
         _(children.get().reverse()).each(function(el, i) {
@@ -312,19 +308,20 @@ $(function() {
     template : _.template($('#palette-template').html()),
     page : 1,
     setPage : function(p) {
-      if (p > butterfliesWithSpotCount.length / pageLength || p < 1)
+      if (p > Math.ceil(butterfliesWithSpotCount.length / pageLength) || p < 1)
         this.page = 1;
       else
         this.page = p;
     },
     updatePagination : function(p) {
       this.setPage(p);
+      debugger;
       this.render(false); // don't force total refresh
     },
     setPaginationButtons : function() {
       var that = this;
       var getURL = function (delta) {
-        newPage = parseInt(that.page) + parseInt(delta, 10);
+        newPage = parseInt(that.page, 10) + parseInt(delta, 10);
         curHash = document.location.hash.substr(1);
         hashArr = curHash.split('/');
         newURL = hashArr.slice(0, hashArr.length - 1).join('/') + '/' + newPage;
@@ -332,7 +329,8 @@ $(function() {
       }
       this.$prevBtn = $('#palette-prev-button'); // TODO: cache earlier
       this.$nextBtn = $('#palette-next-button');
-      var totalPages = Math.floor(butterfliesWithSpotCount.length / pageLength);
+      var totalPages = Math.ceil(butterfliesWithSpotCount.length / pageLength);
+      debugger;
       if(this.page == 1) {
         this.$prevBtn.removeClass('red').addClass('disabled');
       } else {
@@ -353,7 +351,7 @@ $(function() {
       if (typeof pageload == "undefined" || pageload == true)
         PageView.prototype.render.apply(this);
       // the router ensures that the butterfly model has the right spot count
-      var start = this.page * pageLength - 1;
+      var start = (this.page - 1) * pageLength;
       if(typeof this._palettePageView == "undefined")
         this._palettePageView = new PalettePageView();
       this._palettePageView.setCollection(
