@@ -134,12 +134,15 @@ $(function () {
 
   // generic view for page support
   var PageView = Backbone.View.extend({
-    el: $('#page-holder'),
+    el : $('#page-holder'),
     render : function() {
       this.$el.html(this.template());
       bindNavLinks(this.$el);
     },
+    childViews : [],
     close : function() {
+      console.log('generic page cleanup');
+      this.unbind();
       unbindNavLinks(this.$el);
     }
   });
@@ -152,14 +155,14 @@ $(function () {
 
   // handles update of slider count as well as spot count in model
   var SliderView = Backbone.View.extend({
-    initialize: function() {
+    initialize : function () {
       _.bindAll(this, 'render');
-      this.model.bind('change:eyespot_count', this.render);
+      this.listenTo(this.model, 'change:eyespot_count', this.render);
       this.$handleText = null;
       this.$eyespotSlider = $('#eyespot-slider');
       this.render();
     },
-    render: function() {
+    render : function () {
       var v = this;
       var m = this.model;
       v.$eyespotSlider.slider({
@@ -167,29 +170,39 @@ $(function () {
         min: 1,
         max: 18,
         step: 1,
-        create: function() {
+        create : function () {
           $('.ui-slider-handle').first().html(
             '<span id="handle-text">'+m.get('eyespot_count')+'</span>'
           );
           v.$handleText = $('#handle-text');
         },
-        slide: function(event, ui) {
+        slide : function (event, ui) {
           m.set({'eyespot_count': ui.value});
         }
       });
       this.$handleText.html(m.get('eyespot_count'));
+    },
+    close : function () {
+      this.stopListening();
+      this.unbind();
+      console.log('closing sliderview');
     }
   });
 
   // bind the button to the eyespot count for linking
   var PaletteButtonView = Backbone.View.extend({
-    initialize : function() {
+    initialize : function () {
       _.bindAll(this, 'updateLink');
-      this.model.bind('change:eyespot_count', this.updateLink);
+      this.listenTo(this.model, 'change:eyespot_count', this.updateLink);
     },
     updateLink : function () {
       this.el.setAttribute("href", "palette/eyespots/" + this.model.get('eyespot_count')
         + "/page/1");
+    },
+    close : function () {
+      this.stopListening();
+      this.unbind();
+      console.log('closing paletteButtonView');
     }
   });
 
@@ -197,13 +210,19 @@ $(function () {
     template : _.template($('#eyespots-template').html()),
     render : function () {
       PageView.prototype.render.apply(this);
-      var sliderView = new SliderView({
+      this.childViews.push(new SliderView({
         model: butterfly
-      });
-      var paletteButtonView = new PaletteButtonView({
+      }));
+      this.childViews.push(new PaletteButtonView({
         model: butterfly,
         el: document.getElementById('palette-link')
-      });
+      }));
+    },
+    close : function() {
+      PageView.prototype.close.apply(this);
+      _.each(this.childViews, function(childView) {
+        childView.close();
+      })
     }
   });
 
