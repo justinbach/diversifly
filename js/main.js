@@ -144,7 +144,7 @@
     },
     childViews : [],
     close : function() {
-      console.log('generic page cleanup');
+      // console.log('generic page cleanup');
       this.unbind();
       unbindNavLinks(this.$el);
       _.each(this.childViews, function(childView) {
@@ -228,8 +228,9 @@
   var PalettePageView = Backbone.View.extend({
     el : $('.palette-page'),
     initialize : function() {
-      this.$el = $('.palette-page');
       _.bindAll(this);
+      this.$el = $('.palette-page');
+      this.$el.bind('click', this.handleClick);
       this._butterflyPaletteViews = [];
     },
     setCollection : function (col) {
@@ -243,7 +244,16 @@
         }));
       });
     },
+    handleClick : function (e) {
+      // set up click handler for animation
+      // it's either the image or its parent
+      $link = (e.target.tagName == "IMG" ?
+        $(e.target.parentElement) : $(e.target));
+      this.navigateFrom($link.attr('href').split('/')[1]);
+      return false;
+    },
     navigateFrom : function (id) {
+      console.log("navigateFrom: ", id);
       butterfly.set('id', id);
       var children = this.$el.children();
       var that = this;
@@ -273,7 +283,9 @@
         _([$buttons, $banner, $spacer]).each(function($el) {
           $el.delay(paletteSlide).animate({opacity : 0}, paletteSlide);
         });
+        console.log($banner);
         $banner.promise().done(function() {
+          console.log("and we're done");
           router.navigate("butterfly/" + butterfly.get('id'), {trigger: true});
         })
       });
@@ -286,14 +298,6 @@
         $bfly = bflyView.render().$el;
         that.$el.append($bfly);
         $bfly.fadeOut(0);
-      });
-      // set up click handler for animation
-      this.$el.click(function(e) {
-        // it's either the image or its parent
-        $link = (e.target.tagName == "IMG" ?
-          $(e.target.parentElement) : $(e.target));
-        that.navigateFrom($link.attr('href').split('/')[1]);
-        return false;
       });
       _(this.$el.children()).each(function (el, i) {
         $(el).delay(paletteDelay * i).fadeIn(paletteFade);
@@ -308,6 +312,7 @@
           $(el).delay(paletteDelay * i).fadeOut(paletteFade);
         });
         children.promise().done(function() {
+          that.closeButterflyPaletteViews();
           that.$el.empty();
           that.showPalettes();
         });
@@ -322,6 +327,7 @@
     },
     close : function () {
       this.closeButterflyPaletteViews();
+      this.$el.unbind();
       this.unbind();
     }
   });
@@ -339,7 +345,7 @@
       return this;
     },
     close : function () {
-      console.log('unbinding ButterflyPaletteView');
+      // console.log('unbinding ButterflyPaletteView');
       this.$el.unbind();
       this.unbind();
     }
@@ -390,8 +396,11 @@
       delete this._palettePageView;
     },
     render : function(pageload) {
-      if (typeof pageload !== "boolean" || pageload == true)
+      if (typeof pageload !== "boolean" || pageload == true) {
         PageView.prototype.render.apply(this);
+        this.$prevBtn = $('#palette-prev-button');
+        this.$nextBtn = $('#palette-next-button');
+      }
       // the router ensures that the butterfly model has the right spot count
       var start = (this.page - 1) * pageLength;
       if(typeof this._palettePageView == "undefined") {
@@ -400,8 +409,6 @@
       }
       this._palettePageView.setCollection(
         new Butterflies(butterfliesWithSpotCount.slice(start, start + pageLength)));
-      this.$prevBtn = $('#palette-prev-button');
-      this.$nextBtn = $('#palette-next-button');
       this.setPaginationButtons();
       this._palettePageView.render();
     }
@@ -544,7 +551,7 @@
       }
       if (this.oldView)
         this.oldView.close();
-      console.log(view);
+      // console.log(view);
       $viewEl = this.$el;
       $viewEl.fadeOut(animate ? viewFade : 0);
       $viewEl.promise().done(function() {
@@ -615,7 +622,7 @@
     oldRoute : "",
 
     defaultTransition : function(route) {
-      console.log(route);
+      // console.log(route);
       app.showView(app.views[this.pageViewMap[route]])
       this.oldRoute = route;
     }
