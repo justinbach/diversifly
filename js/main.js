@@ -192,7 +192,6 @@ $(function () {
     close : function () {
       this.stopListening();
       this.unbind();
-      console.log('closing sliderview');
     }
   });
 
@@ -209,7 +208,6 @@ $(function () {
     close : function () {
       this.stopListening();
       this.unbind();
-      console.log('closing paletteButtonView');
     }
   });
 
@@ -236,6 +234,7 @@ $(function () {
     },
     setCollection : function (col) {
       this.collection = col;
+      this.closeButterflyPaletteViews();
       this._butterflyPaletteViews = [];
       var that = this;
       this.collection.each(function(bfly) {
@@ -315,6 +314,15 @@ $(function () {
       } else {
         that.showPalettes();
       }
+    },
+    closeButterflyPaletteViews : function() {
+      _(this._butterflyPaletteViews).each(function(bflyPaletteView) {
+        bflyPaletteView.close();
+      });
+    },
+    close : function () {
+      closeButterflyPaletteViews(0);
+      this.unbind();
     }
   });
 
@@ -329,6 +337,11 @@ $(function () {
         'colorString' : "colors[]=" + this.model.get('palette').join('&colors[]=')
       }));
       return this;
+    },
+    close : function () {
+      console.log('unbinding ButterflyPaletteView');
+      this.$el.unbind();
+      this.unbind();
     }
   });
 
@@ -358,8 +371,6 @@ $(function () {
         newURL = hashArr.slice(0, hashArr.length - 1).join('/') + '/' + newPage;
         return newURL;
       }
-      this.$prevBtn = $('#palette-prev-button'); // TODO: cache earlier
-      this.$nextBtn = $('#palette-next-button');
       var totalPages = Math.ceil(butterfliesWithSpotCount.length / pageLength);
       if(this.page == 1) {
         this.$prevBtn.removeClass('red').addClass('disabled');
@@ -382,11 +393,14 @@ $(function () {
         PageView.prototype.render.apply(this);
       // the router ensures that the butterfly model has the right spot count
       var start = (this.page - 1) * pageLength;
-      if(typeof this._palettePageView == "undefined")
+      if(typeof this._palettePageView == "undefined") {
         this._palettePageView = new PalettePageView();
+        this.childViews.push(this._palettePageView);
+      }
       this._palettePageView.setCollection(
         new Butterflies(butterfliesWithSpotCount.slice(start, start + pageLength)));
-
+      this.$prevBtn = $('#palette-prev-button');
+      this.$nextBtn = $('#palette-next-button');
       this.setPaginationButtons();
       this._palettePageView.render();
     }
@@ -432,6 +446,7 @@ $(function () {
       var bflyPaletteView = new ButterflyPaletteRevealView({
         model : bfly
       });
+      this.childViews.push(bflyPaletteView);
       $butterflyPage.prepend(bflyPaletteView.render().$el.html());
       _(firstFadeItems).each(function($el) {
         $el.animate({opacity : 1}, paletteSlide);
@@ -496,9 +511,12 @@ $(function () {
         $reveal.fadeIn();
       })
       i.src = "img/butterflies/" + butterfly.get('id') + ".jpg";
+    },
+    close : function () {
+      PageView.prototype.close.apply(this);
+      $('#rotating-card a.back').unbind();
     }
   });
-
 
 
   // top-level app
