@@ -1,4 +1,4 @@
-$(function () {
+// $(function () {
 
   // helper to load images using jquery deferred objects
   // see http://aboutcode.net/2013/01/09/load-images-with-jquery-deferred.html
@@ -321,7 +321,7 @@ $(function () {
       });
     },
     close : function () {
-      closeButterflyPaletteViews(0);
+      this.closeButterflyPaletteViews();
       this.unbind();
     }
   });
@@ -345,6 +345,7 @@ $(function () {
     }
   });
 
+  // TODO: this page is still leaky!
   var PaletteView = PageView.extend({
     initialize : function() {
       _.bindAll(this);
@@ -547,6 +548,8 @@ $(function () {
       $viewEl = this.$el;
       $viewEl.fadeOut(animate ? viewFade : 0);
       $viewEl.promise().done(function() {
+        if (this.oldView)
+          this.oldView.remove();
         $viewEl.html(view[fn]).fadeIn(animate ? viewFade : 0);
       });
       this.oldView = view;
@@ -622,4 +625,4 @@ $(function () {
   var router = new Router();
   Backbone.history.start();
 
-});
+// });
