@@ -1,10 +1,10 @@
-$(function() {
+$(function () {
 
   // helper to load images using jquery deferred objects
   // see http://aboutcode.net/2013/01/09/load-images-with-jquery-deferred.html
-  $.loadImage = function(url) {
+  $.loadImage = function (url) {
     // Define a "worker" function that should eventually resolve or reject the deferred object.
-    var loadImage = function(deferred) {
+    var loadImage = function (deferred) {
       var image = new Image();
 
       // Set up event handlers to know when the image has loaded
@@ -315,7 +315,6 @@ $(function() {
     },
     updatePagination : function(p) {
       this.setPage(p);
-      debugger;
       this.render(false); // don't force total refresh
     },
     setPaginationButtons : function() {
@@ -330,7 +329,6 @@ $(function() {
       this.$prevBtn = $('#palette-prev-button'); // TODO: cache earlier
       this.$nextBtn = $('#palette-next-button');
       var totalPages = Math.ceil(butterfliesWithSpotCount.length / pageLength);
-      debugger;
       if(this.page == 1) {
         this.$prevBtn.removeClass('red').addClass('disabled');
       } else {
