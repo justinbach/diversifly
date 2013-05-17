@@ -67,6 +67,8 @@ $(function () {
   var pageLength = 8; // number of butterflies on a page
   var butterfliesWithSpotCount = new Butterflies(); // total # butterflies meeting spot count
 
+
+  // TODO: factor out common code below
   var updateButterfliesWithSpotCount = function(spotCount) {
     butterfliesWithSpotCount.reset();
     IDsOfInterest = diversifly_data[spotCount - 1]; // 0-indexed
@@ -123,12 +125,22 @@ $(function () {
     });
   }
 
+  // and the converse
+  var unbindNavLinks = function ($container) {
+    $container.find('a.nav').each(function(index, el) {
+      $(el).unbind();
+    });
+  }
+
   // generic view for page support
   var PageView = Backbone.View.extend({
     el: $('#page-holder'),
     render : function() {
       this.$el.html(this.template());
       bindNavLinks(this.$el);
+    },
+    close : function() {
+      unbindNavLinks(this.$el);
     }
   });
 
@@ -484,12 +496,16 @@ $(function () {
       };
       this.showView(this.views.homeView);
     },
+    oldView : null,
     showView : function (view) {
+      if (this.oldView)
+        this.oldView.close();
       $viewEl = this.$el;
       $viewEl.fadeOut(viewFade);
       $viewEl.promise().done(function() {
         $viewEl.html(view.render()).fadeIn(viewFade);
       });
+      this.oldView = view;
     },
     snapViewWithFn : function (view, fn) {
       this.$el.html(view[fn]());
