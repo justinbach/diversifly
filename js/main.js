@@ -306,7 +306,6 @@
       });
     },
     render : function() {
-      console.log("PalettePageView render()");
       var children = this.$el.children();
       var that = this;
       // debugger;
@@ -405,10 +404,8 @@
     render : function(pageload) {
       if (typeof pageload !== "boolean" || pageload == true) {
         PageView.prototype.render.apply(this);
-        if(!this.$prevBtn)
-          this.$prevBtn = $('#palette-prev-button');
-        if(!this.$nextBtn)
-          this.$nextBtn = $('#palette-next-button');
+        this.$prevBtn = $('#palette-prev-button');
+        this.$nextBtn = $('#palette-next-button');
       }
       // the router ensures that the butterfly model has the right spot count
       var start = (this.page - 1) * pageLength;
