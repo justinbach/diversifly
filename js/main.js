@@ -149,6 +149,7 @@
       _.each(this.childViews, function(childView) {
         if (childView.close)
           childView.close();
+          delete childView;
       })
     }
   });
@@ -191,6 +192,10 @@
     close : function () {
       this.stopListening();
       this.unbind();
+      this.$eyespotSlider.destroy();
+      this.$eyespotSlider = null;
+      this.$handleText = null;
+      this.remove();
     }
   });
 
@@ -207,6 +212,7 @@
     close : function () {
       this.stopListening();
       this.unbind();
+      this.remove();
     }
   });
 
@@ -300,15 +306,17 @@
       });
     },
     render : function() {
+      console.log("PalettePageView render()");
       var children = this.$el.children();
       var that = this;
+      // debugger;
       if (children.length != 0) {
         // animate out the old page
         _(children.get().reverse()).each(function(el, i) {
           $(el).delay(paletteDelay * i).fadeOut(paletteFade);
         });
         children.promise().done(function() {
-          that.closeButterflyPaletteViews();
+          children.remove();
           that.$el.empty();
           that.showPalettes();
         });
@@ -319,11 +327,13 @@
     closeButterflyPaletteViews : function() {
       _(this._butterflyPaletteViews).each(function(bflyPaletteView) {
         bflyPaletteView.close();
+        delete bflyPaletteView;
       });
     },
     close : function () {
       this.closeButterflyPaletteViews();
       this.$el.unbind();
+      this.$el = null;
       this.unbind();
     }
   });
@@ -387,13 +397,18 @@
       }
     },
     clearPalette : function () {
-      delete this._palettePageView;
+      if (this._palettePageView) {
+        this._palettePageView.close();
+        delete this._palettePageView;
+      }
     },
     render : function(pageload) {
       if (typeof pageload !== "boolean" || pageload == true) {
         PageView.prototype.render.apply(this);
-        this.$prevBtn = $('#palette-prev-button');
-        this.$nextBtn = $('#palette-next-button');
+        if(!this.$prevBtn)
+          this.$prevBtn = $('#palette-prev-button');
+        if(!this.$nextBtn)
+          this.$nextBtn = $('#palette-next-button');
       }
       // the router ensures that the butterfly model has the right spot count
       var start = (this.page - 1) * pageLength;
@@ -405,6 +420,12 @@
         new Butterflies(butterfliesWithSpotCount.slice(start, start + pageLength)));
       this.setPaginationButtons();
       this._palettePageView.render();
+    },
+    close : function () {
+      PageView.prototype.close.apply(this);
+      delete this.$prevBtn;
+      delete this.$nextBtn;
+      this.clearPalette;
     }
   });
 
@@ -547,13 +568,13 @@
       if (typeof fn == "undefined") {
         fn = "render";
       }
-      if (this.oldView)
-        this.oldView.close();
       $viewEl = this.$el;
       $viewEl.fadeOut(animate ? viewFade : 0);
       $viewEl.promise().done(function() {
-        if (this.oldView)
+        if (this.oldView) {
+          this.oldView.close();
           this.oldView.remove();
+        }
         $viewEl.html(view[fn]).fadeIn(animate ? viewFade : 0);
       });
       this.oldView = view;
@@ -588,7 +609,8 @@
     },
 
     home : function() {
-      butterfly = new Butterfly();
+      if(!butterfly)
+        butterfly = new Butterfly();
       this.defaultTransition('home');
     },
 
