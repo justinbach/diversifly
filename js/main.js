@@ -144,7 +144,6 @@
     },
     childViews : [],
     close : function() {
-      // console.log('generic page cleanup');
       this.unbind();
       unbindNavLinks(this.$el);
       _.each(this.childViews, function(childView) {
@@ -253,7 +252,6 @@
       return false;
     },
     navigateFrom : function (id) {
-      console.log("navigateFrom: ", id);
       butterfly.set('id', id);
       var children = this.$el.children();
       var that = this;
@@ -283,9 +281,7 @@
         _([$buttons, $banner, $spacer]).each(function($el) {
           $el.delay(paletteSlide).animate({opacity : 0}, paletteSlide);
         });
-        console.log($banner);
         $banner.promise().done(function() {
-          console.log("and we're done");
           router.navigate("butterfly/" + butterfly.get('id'), {trigger: true});
         })
       });
@@ -345,13 +341,11 @@
       return this;
     },
     close : function () {
-      // console.log('unbinding ButterflyPaletteView');
       this.$el.unbind();
       this.unbind();
     }
   });
 
-  // TODO: this page is still leaky!
   var PaletteView = PageView.extend({
     initialize : function() {
       _.bindAll(this);
@@ -487,11 +481,15 @@
             return;
           }
 
-          if (e.originalEvent.propertyName = "width") {
+          if (e.originalEvent.propertyName == "width") {
             $species.html(butterfly.get('name').toUpperCase());
             $country.html('Native Country: ' + butterfly.get('country'));
-            $species.animate({opacity : 1}, revealFade, function() {
-              $country.animate({opacity : 1}, revealFade, function() {
+            $species.animate({opacity : 1}, revealFade);
+            console.log('species:');
+            console.log($species);
+            $species.promise().done(function() {
+              $country.animate({opacity : 1}, revealFade);
+              $country.promise().done(function() {
                 $button.animate({opacity : 1}, revealFade);
               });
             });
@@ -551,7 +549,6 @@
       }
       if (this.oldView)
         this.oldView.close();
-      // console.log(view);
       $viewEl = this.$el;
       $viewEl.fadeOut(animate ? viewFade : 0);
       $viewEl.promise().done(function() {
@@ -622,7 +619,6 @@
     oldRoute : "",
 
     defaultTransition : function(route) {
-      // console.log(route);
       app.showView(app.views[this.pageViewMap[route]])
       this.oldRoute = route;
     }
