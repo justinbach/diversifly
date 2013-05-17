@@ -134,6 +134,9 @@ $(function () {
 
   // generic view for page support
   var PageView = Backbone.View.extend({
+    initialize : function() {
+      _.bindAll(this);
+    },
     el : $('#page-holder'),
     render : function() {
       this.$el.html(this.template());
@@ -144,6 +147,10 @@ $(function () {
       console.log('generic page cleanup');
       this.unbind();
       unbindNavLinks(this.$el);
+      _.each(this.childViews, function(childView) {
+        if (childView.close)
+          childView.close();
+      })
     }
   });
 
@@ -217,12 +224,6 @@ $(function () {
         model: butterfly,
         el: document.getElementById('palette-link')
       }));
-    },
-    close : function() {
-      PageView.prototype.close.apply(this);
-      _.each(this.childViews, function(childView) {
-        childView.close();
-      })
     }
   });
 
@@ -377,7 +378,7 @@ $(function () {
       delete this._palettePageView;
     },
     render : function(pageload) {
-      if (typeof pageload == "undefined" || pageload == true)
+      if (typeof pageload !== "boolean" || pageload == true)
         PageView.prototype.render.apply(this);
       // the router ensures that the butterfly model has the right spot count
       var start = (this.page - 1) * pageLength;
@@ -516,18 +517,21 @@ $(function () {
       this.showView(this.views.homeView);
     },
     oldView : null,
-    showView : function (view) {
+    showView : function (view, animate, fn) {
+      if (typeof animate == "undefined")
+        animate = true;
+      if (typeof fn == "undefined") {
+        fn = "render";
+      }
       if (this.oldView)
         this.oldView.close();
+      console.log(view);
       $viewEl = this.$el;
-      $viewEl.fadeOut(viewFade);
+      $viewEl.fadeOut(animate ? viewFade : 0);
       $viewEl.promise().done(function() {
-        $viewEl.html(view.render()).fadeIn(viewFade);
+        $viewEl.html(view[fn]).fadeIn(animate ? viewFade : 0);
       });
       this.oldView = view;
-    },
-    snapViewWithFn : function (view, fn) {
-      this.$el.html(view[fn]());
     }
   });
 
@@ -580,7 +584,7 @@ $(function () {
       butterfly = getButterflyByID(id);
       if (this.oldRoute.indexOf("palette") != -1) {
         // complete animation from palette screen
-        app.snapViewWithFn(app.views.butterflyView, "renderWithID");
+        app.showView(app.views.butterflyView, false, "renderWithID");
         this.oldRoute = 'butterfly';
       } else {
         this.defaultTransition('butterfly');
@@ -590,6 +594,7 @@ $(function () {
     oldRoute : "",
 
     defaultTransition : function(route) {
+      console.log(route);
       app.showView(app.views[this.pageViewMap[route]])
       this.oldRoute = route;
     }
