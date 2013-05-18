@@ -317,6 +317,7 @@
           $(el).delay(paletteDelay * i).fadeOut(paletteFade);
         });
         children.promise().done(function() {
+          children.unbind();
           children.remove();
           that.$el.empty();
           that.showPalettes();
@@ -353,7 +354,7 @@
     close : function () {
       this.$el.unbind();
       this.unbind();
-      this.remove();
+      // removal handled by PalettePageView
     }
   });
 
@@ -432,7 +433,7 @@
 
   // butterfly page stuff
   var ButterflyPaletteRevealView = ButterflyPaletteView.extend({
-    render: function() {
+    render : function () {
       this.$el.html(
         _.template($('#butterfly-palette-reveal-template').html(), {
         'id' : this.model.get('id'),
@@ -440,6 +441,10 @@
       }));
       return this;
     },
+    close : function () {
+      ButterflyPaletteView.prototype.close.apply(this);
+      console.log('closing reveal view');
+    }
   });
 
   var ButterflyView = PageView.extend({
@@ -541,6 +546,7 @@
     },
     close : function () {
       PageView.prototype.close.apply(this);
+      console.log('closing reveal page');
     }
   });
 
@@ -570,10 +576,13 @@
       $viewEl = this.$el;
       unbindNavLinks($viewEl); // has to be done before close is called
       $viewEl.fadeOut(animate ? viewFade : 0);
+      var that = this;
+      // TODO: ****** THIS SECTION IS THE PROBLEM ******
       $viewEl.promise().done(function() {
-        if (this.oldView) {
-          this.oldView.close();
-          this.oldView.remove();
+        if (that.oldView) {
+          console.log("that.oldView", that.oldView);
+          that.oldView.close();
+          // that.oldView.remove();
         }
         $viewEl.html(view[fn]).fadeIn(animate ? viewFade : 0);
         // bindNavLinks($viewEl);
