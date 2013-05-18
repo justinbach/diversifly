@@ -146,6 +146,8 @@
     },
     childViews : [],
     close : function() {
+      // TODO: should we be removing and unbinding here?
+      // each page instance is only created once...
       this.remove();
       this.unbind();
       _.each(this.childViews, function(childView) {
@@ -194,7 +196,8 @@
     close : function () {
       this.stopListening();
       this.unbind();
-      this.$eyespotSlider.destroy();
+      // TODO: disable slider
+      // this.$eyespotSlider.destroy();
       this.$eyespotSlider = null;
       this.$handleText = null;
       this.remove();
