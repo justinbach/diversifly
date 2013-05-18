@@ -355,6 +355,8 @@
     }
   });
 
+  // this still seems to be leaking memory (DOM elements) on pagination
+  // events
   var PaletteView = PageView.extend({
     initialize : function() {
       _.bindAll(this);
