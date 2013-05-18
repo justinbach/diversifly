@@ -581,7 +581,7 @@
       $viewEl.promise().done(function() {
         if (that.oldView) {
           console.log("that.oldView", that.oldView);
-          that.oldView.close();
+          // that.oldView.close();
           // that.oldView.remove();
         }
         $viewEl.html(view[fn]).fadeIn(animate ? viewFade : 0);
