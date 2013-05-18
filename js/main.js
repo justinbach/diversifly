@@ -115,6 +115,7 @@
     $container.find('a.nav').each(function(index, el) {
       $el = $(el);
       $el.click((function($el) {
+        console.log('binding nav link');
         return (
           function(e) {
             router.navigate($el.attr('href'), { trigger : true});
@@ -128,6 +129,7 @@
   // and the converse
   var unbindNavLinks = function ($container) {
     $container.find('a.nav').each(function(index, el) {
+      console.log('unbinding nav link');
       $(el).unbind();
     });
   }
@@ -144,13 +146,13 @@
     },
     childViews : [],
     close : function() {
+      this.remove();
       this.unbind();
-      unbindNavLinks(this.$el);
       _.each(this.childViews, function(childView) {
         if (childView.close)
           childView.close();
           delete childView;
-      })
+      });
     }
   });
 
@@ -331,9 +333,8 @@
     },
     close : function () {
       this.closeButterflyPaletteViews();
-      this.$el.unbind();
-      this.$el = null;
       this.unbind();
+      this.remove();
     }
   });
 
@@ -352,6 +353,7 @@
     close : function () {
       this.$el.unbind();
       this.unbind();
+      this.remove();
     }
   });
 
@@ -421,10 +423,10 @@
       this._palettePageView.render();
     },
     close : function () {
-      PageView.prototype.close.apply(this);
       delete this.$prevBtn;
       delete this.$nextBtn;
       this.clearPalette;
+      PageView.prototype.close.apply(this);
     }
   });
 
@@ -502,11 +504,10 @@
           }
 
           if (e.originalEvent.propertyName == "width") {
+            $('#rotating-card a.back').unbind('transitionend');
             $species.html(butterfly.get('name').toUpperCase());
             $country.html('Native Country: ' + butterfly.get('country'));
             $species.animate({opacity : 1}, revealFade);
-            console.log('species:');
-            console.log($species);
             $species.promise().done(function() {
               $country.animate({opacity : 1}, revealFade);
               $country.promise().done(function() {
@@ -540,7 +541,6 @@
     },
     close : function () {
       PageView.prototype.close.apply(this);
-      $('#rotating-card a.back').unbind();
     }
   });
 
@@ -568,6 +568,7 @@
         fn = "render";
       }
       $viewEl = this.$el;
+      unbindNavLinks($viewEl); // has to be done before close is called
       $viewEl.fadeOut(animate ? viewFade : 0);
       $viewEl.promise().done(function() {
         if (this.oldView) {
@@ -575,6 +576,7 @@
           this.oldView.remove();
         }
         $viewEl.html(view[fn]).fadeIn(animate ? viewFade : 0);
+        // bindNavLinks($viewEl);
       });
       this.oldView = view;
     }
@@ -603,17 +605,19 @@
       butterfly : "butterflyView"
     },
 
+    oldRoute : "",
+
     defaultPage : function () {
       this.defaultTransition('home')
     },
 
-    home : function() {
+    home : function () {
       if(!butterfly)
         butterfly = new Butterfly();
       this.defaultTransition('home');
     },
 
-    palette : function(spotCount, page) {
+    palette : function (spotCount, page) {
       if (this.oldRoute.indexOf("palette") != -1) {
         // pagination event
         app.views.paletteView.updatePagination(page);
@@ -626,7 +630,7 @@
       }
     },
 
-    butterfly : function(id) {
+    butterfly : function (id) {
       butterfly = getButterflyByID(id);
       if (this.oldRoute.indexOf("palette") != -1) {
         // complete animation from palette screen
@@ -637,9 +641,8 @@
       }
     },
 
-    oldRoute : "",
 
-    defaultTransition : function(route) {
+    defaultTransition : function (route) {
       app.showView(app.views[this.pageViewMap[route]])
       this.oldRoute = route;
     }
