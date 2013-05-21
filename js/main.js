@@ -117,7 +117,7 @@
     $container.find('a.nav').each(function(index, el) {
       var $el = $(el);
       $el.click((function($el) {
-        console.log('binding nav link');
+        // console.log('binding nav link');
         return (
           function(e) {
             router.navigate($el.attr('href'), { trigger : true});
@@ -131,7 +131,7 @@
   // and the converse
   var unbindNavLinks = function ($container) {
     $container.find('a.nav').each(function(index, el) {
-      console.log('unbinding nav link');
+      // console.log('unbinding nav link');
       $(el).unbind();
     });
   }
@@ -421,7 +421,7 @@
     close : function () {
       this.$el.unbind();
       this.unbind();
-      console.log('closing ButterflyPaletteView');
+      // console.log('closing ButterflyPaletteView');
       // removal handled by PalettePageView
     }
   });
@@ -647,8 +647,8 @@
       $viewEl.promise().done(function() {
         if (that.oldView) {
           // debugger;
-          console.log("that.oldView", that.oldView);
-          // that.oldView.close();
+          // console.log("that.oldView", that.oldView);
+          that.oldView.close();
           // that.oldView.remove();
         }
         $viewEl.html(view[fn]).fadeIn(animate ? viewFade : 0);
