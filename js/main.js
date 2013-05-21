@@ -421,7 +421,6 @@
     close : function () {
       this.$el.unbind();
       this.unbind();
-      // console.log('closing ButterflyPaletteView');
       // removal handled by PalettePageView
     }
   });
