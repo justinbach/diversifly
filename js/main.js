@@ -65,6 +65,7 @@
 
   var butterflyPage = new Butterflies(); // active page for palette selection
   var pageLength = 8; // number of butterflies on a page
+  var maxSpots = 18;
   var butterfliesWithSpotCount = new Butterflies(); // total # butterflies meeting spot count
 
 
@@ -104,6 +105,7 @@
   //////////////////////////////////
 
   // a few global animation settings
+  var spotFade = 150;
   var paletteFade = 150;
   var paletteDelay = 100;
   var paletteSlide = 500;
@@ -181,7 +183,7 @@
       v.$eyespotSlider.slider({
         value: m.get('eyespot_count'),
         min: 1,
-        max: 18,
+        max: maxSpots,
         step: 1,
         // TODO: possible leak here?
         create : function () {
@@ -206,6 +208,50 @@
     }
   });
 
+  var EyespotDisplayView = Backbone.View.extend({
+    initialize : function () {
+      _.bindAll(this, 'render');
+      this.listenTo(this.model, 'change:eyespot_count', this.render);
+      this.initializeLayers();
+    },
+    initializeLayers : function () {
+      this.layers = [];
+      for (var i = 1; i <= maxSpots; i++) {
+        // initialize the layers
+        var img = new Image();
+        img.src = "img/eyespots/eyespots-" + i + ".svg";
+        img.style.opacity = 0;
+        this.$el.append(img);
+        this.layers.push(img);
+      }
+      // catch up with current state
+      for (var i = 1; i <= this.model.get("eyespot_count"); i++) {
+        $(this.layers[i - 1]).animate({ opacity : 1}, viewFade);
+      }
+    },
+    render : function () {
+      var curSpotCount = this.model.get("eyespot_count");
+      for (var i = 1; i <= maxSpots; i++) {
+        if (i <= curSpotCount) {
+          $(this.layers[i - 1]).animate(
+            { opacity : 1 },
+            { queue : false,
+              duration : spotFade });
+        } else {
+          $(this.layers[i - 1]).animate(
+            { opacity : 0 },
+            { queue : false,
+              duration : spotFade });
+        }
+      }
+    },
+    close : function () {
+      this.stopListening();
+      this.unbind();
+      this.remove();
+    }
+  })
+
   // bind the button to the eyespot count for linking
   var PaletteButtonView = Backbone.View.extend({
     initialize : function () {
@@ -228,11 +274,15 @@
     render : function () {
       PageView.prototype.render.apply(this);
       this.childViews.push(new SliderView({
-        model: butterfly
+        model : butterfly
       }));
+      this.childViews.push(new EyespotDisplayView({
+        model : butterfly,
+        el : document.getElementById('eyespot-display')
+      }))
       this.childViews.push(new PaletteButtonView({
-        model: butterfly,
-        el: document.getElementById('palette-link')
+        model : butterfly,
+        el : document.getElementById('palette-link')
       }));
     },
     close : function () {

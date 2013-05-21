@@ -341,6 +341,13 @@ body {
   background-size: 620px 408px;
   background-image: url('../img/eyespots/eyespots-bg.svg');
   margin: auto;
+  position: relative;
+}
+
+#eyespot-display img {
+  width: 620px;
+  height: 408px;
+  position: absolute;
 }
 
 #eyespot-slider-elements {
