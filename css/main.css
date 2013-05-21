@@ -335,6 +335,14 @@ body {
   margin-bottom: 34px;
 }
 
+#eyespot-display {
+  width: 620px;
+  height: 408px;
+  background-size: 620px 408px;
+  background-image: url('../img/eyespots/eyespots-bg.svg');
+  margin: auto;
+}
+
 #eyespot-slider-elements {
   width: 620px;
   height: 54px;

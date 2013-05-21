@@ -6,7 +6,6 @@
     <div class="spacer"></div>
     <div id="eyespot-selector">
       <div id="eyespot-display">
-        <img src="img/butterfly.svg" width="620" height="408" />
       </div>
       <div id="eyespot-slider-elements">
         <div class="left"><span class="red">-</span> LESS</div>
