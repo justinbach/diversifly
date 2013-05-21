@@ -47,7 +47,7 @@
   //////////////////////////////////
 
   // model for butterfly selection
-  Butterfly = Backbone.Model.extend({
+  var Butterfly = Backbone.Model.extend({
     defaults: {
       eyespot_count: 1,
       id: 0,
@@ -71,7 +71,7 @@
   // TODO: factor out common code below
   var updateButterfliesWithSpotCount = function(spotCount) {
     butterfliesWithSpotCount.reset();
-    IDsOfInterest = diversifly_data[spotCount - 1]; // 0-indexed
+    var IDsOfInterest = diversifly_data[spotCount - 1]; // 0-indexed
     _(IDsOfInterest).each(function(butterfly, id) {
       butterfliesWithSpotCount.add({
         eyespot_count : spotCount,
@@ -141,6 +141,7 @@
     },
     el : $('#page-holder'),
     render : function() {
+      this.$el.empty();
       this.$el.html(this.template());
       bindNavLinks(this.$el);
     },
@@ -148,13 +149,14 @@
     close : function() {
       // TODO: should we be removing and unbinding here?
       // each page instance is only created once...
-      // this.remove();
-      // this.unbind();
+      unbindNavLinks(this.$el);
+      this.unbind();
       _.each(this.childViews, function(childView) {
         if (childView.close)
           childView.close();
           delete childView;
       });
+      this.childViews = [];
     }
   });
 
@@ -181,6 +183,7 @@
         min: 1,
         max: 18,
         step: 1,
+        // TODO: possible leak here?
         create : function () {
           $('.ui-slider-handle').first().html(
             '<span id="handle-text">'+m.get('eyespot_count')+'</span>'
@@ -196,8 +199,7 @@
     close : function () {
       this.stopListening();
       this.unbind();
-      // TODO: disable slider
-      // this.$eyespotSlider.destroy();
+      this.$eyespotSlider.empty();
       this.$eyespotSlider = null;
       this.$handleText = null;
       this.remove();
@@ -232,6 +234,9 @@
         model: butterfly,
         el: document.getElementById('palette-link')
       }));
+    },
+    close : function () {
+      PageView.prototype.close.apply(this);
     }
   });
 
@@ -587,12 +592,11 @@
         fn = "render";
       }
       var $viewEl = this.$el;
-      unbindNavLinks($viewEl); // has to be done before close is called
       $viewEl.fadeOut(animate ? viewFade : 0);
       var that = this;
-      // TODO: ****** THIS SECTION IS THE PROBLEM ******
       $viewEl.promise().done(function() {
         if (that.oldView) {
+          // debugger;
           console.log("that.oldView", that.oldView);
           that.oldView.close();
           // that.oldView.remove();
@@ -662,7 +666,6 @@
         this.defaultTransition('butterfly');
       }
     },
-
 
     defaultTransition : function (route) {
       app.showView(app.views[this.pageViewMap[route]])
