@@ -246,9 +246,9 @@
     setCollection : function (col) {
       if (this.collection) {
         _(this.collection).map(function (m) {
-          delete m;
+          m = null;
         })
-        delete this.collection;
+        this.collection = null;
       }
       this.collection = col;
       this.closeButterflyPaletteViews();
