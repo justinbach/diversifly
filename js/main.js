@@ -113,7 +113,7 @@
   // helper for initializing navigation links
   var bindNavLinks = function ($container) {
     $container.find('a.nav').each(function(index, el) {
-      $el = $(el);
+      var $el = $(el);
       $el.click((function($el) {
         console.log('binding nav link');
         return (
@@ -148,8 +148,8 @@
     close : function() {
       // TODO: should we be removing and unbinding here?
       // each page instance is only created once...
-      this.remove();
-      this.unbind();
+      // this.remove();
+      // this.unbind();
       _.each(this.childViews, function(childView) {
         if (childView.close)
           childView.close();
@@ -244,6 +244,12 @@
       this._butterflyPaletteViews = [];
     },
     setCollection : function (col) {
+      if (this.collection) {
+        _(this.collection).map(function (m) {
+          delete m;
+        })
+        delete this.collection;
+      }
       this.collection = col;
       this.closeButterflyPaletteViews();
       this._butterflyPaletteViews = [];
@@ -257,7 +263,7 @@
     handleClick : function (e) {
       // set up click handler for animation
       // it's either the image or its parent
-      $link = (e.target.tagName == "IMG" ?
+      var $link = (e.target.tagName == "IMG" ?
         $(e.target.parentElement) : $(e.target));
       this.navigateFrom($link.attr('href').split('/')[1]);
       return false;
@@ -302,7 +308,7 @@
       // animate in the new page
       var that = this;
       _(this._butterflyPaletteViews).each(function(bflyView) {
-        $bfly = bflyView.render().$el;
+        var $bfly = bflyView.render().$el;
         that.$el.append($bfly);
         $bfly.fadeOut(0);
       });
@@ -320,8 +326,11 @@
           $(el).delay(paletteDelay * i).fadeOut(paletteFade);
         });
         children.promise().done(function() {
-          children.unbind();
-          children.remove();
+          _(children).map(function (el) {
+            var $el = $(el);
+            $el.unbind();
+            $el.remove();
+          });
           that.$el.empty();
           that.showPalettes();
         });
@@ -332,7 +341,7 @@
     closeButterflyPaletteViews : function() {
       _(this._butterflyPaletteViews).each(function(bflyPaletteView) {
         bflyPaletteView.close();
-        delete bflyPaletteView;
+        bflyPaletteView = null;
       });
     },
     close : function () {
@@ -357,6 +366,7 @@
     close : function () {
       this.$el.unbind();
       this.unbind();
+      console.log('closing ButterflyPaletteView');
       // removal handled by PalettePageView
     }
   });
@@ -381,12 +391,11 @@
       this.render(false); // don't force total refresh
     },
     setPaginationButtons : function() {
-      var that = this;
-      var getURL = function (delta) {
-        newPage = parseInt(that.page, 10) + parseInt(delta, 10);
-        curHash = document.location.hash.substr(1);
-        hashArr = curHash.split('/');
-        newURL = hashArr.slice(0, hashArr.length - 1).join('/') + '/' + newPage;
+      var getURL = function (delta, curPage) {
+        var newPage = parseInt(curPage, 10) + parseInt(delta, 10);
+        var curHash = document.location.hash.substr(1);
+        var hashArr = curHash.split('/');
+        var newURL = hashArr.slice(0, hashArr.length - 1).join('/') + '/' + newPage;
         return newURL;
       }
       var totalPages = Math.ceil(butterfliesWithSpotCount.length / pageLength);
@@ -394,19 +403,19 @@
         this.$prevBtn.removeClass('red').addClass('disabled');
       } else {
         this.$prevBtn.removeClass('disabled').addClass('red');
-        this.$prevBtn.attr('href', getURL(-1));
+        this.$prevBtn.attr('href', getURL(-1, this.page));
       }
       if(this.page == totalPages) {
         this.$nextBtn.removeClass('yellow').addClass('disabled');
       } else {
         this.$nextBtn.removeClass('disabled').addClass('yellow');
-        this.$nextBtn.attr('href', getURL(1));
+        this.$nextBtn.attr('href', getURL(1, this.page));
       }
     },
     clearPalette : function () {
       if (this._palettePageView) {
         this._palettePageView.close();
-        delete this._palettePageView;
+        this._palettePageView = null;
       }
     },
     render : function(pageload) {
@@ -417,7 +426,8 @@
       }
       // the router ensures that the butterfly model has the right spot count
       var start = (this.page - 1) * pageLength;
-      if(typeof this._palettePageView == "undefined") {
+      if(typeof this._palettePageView == "undefined" ||
+          this._palettePageView == null) {
         this._palettePageView = new PalettePageView();
         this.childViews.push(this._palettePageView);
       }
@@ -427,9 +437,9 @@
       this._palettePageView.render();
     },
     close : function () {
-      delete this.$prevBtn;
-      delete this.$nextBtn;
-      this.clearPalette;
+      this.$prevBtn = null;
+      this.$nextBtn = null;
+      this.clearPalette();
       PageView.prototype.close.apply(this);
     }
   });
@@ -496,7 +506,7 @@
         $cardReveal.css('top', 0);
         $cardReveal.css('left', '50%');
         $cardReveal.css('margin-left', (-1 * frameWidth / 2) + 'px');
-        $rotatingCard = $('#rotating-card');
+        var $rotatingCard = $('#rotating-card');
         $('#rotating-card a.back img').attr('src', src)
         $rotatingCard.addClass('flip');
         $rotatingCard.addClass('full-size');
@@ -576,7 +586,7 @@
       if (typeof fn == "undefined") {
         fn = "render";
       }
-      $viewEl = this.$el;
+      var $viewEl = this.$el;
       unbindNavLinks($viewEl); // has to be done before close is called
       $viewEl.fadeOut(animate ? viewFade : 0);
       var that = this;
