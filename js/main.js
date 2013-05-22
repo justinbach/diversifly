@@ -393,14 +393,14 @@
         that.showPalettes();
       }
     },
-    closeButterflyPaletteViews : function() {
+    closeButterflyPaletteViews : function(remove) {
       _(this._butterflyPaletteViews).each(function(bflyPaletteView) {
-        bflyPaletteView.close();
+        bflyPaletteView.close(remove);
         bflyPaletteView = null;
       });
     },
     close : function () {
-      this.closeButterflyPaletteViews();
+      this.closeButterflyPaletteViews(true);
       this.unbind();
       this.remove();
     }
@@ -418,10 +418,12 @@
       }));
       return this;
     },
-    close : function () {
+    close : function (remove) {
       this.$el.unbind();
       this.unbind();
-      // removal handled by PalettePageView
+      if (typeof remove !== "undefined" && remove == true) {
+        this.remove();
+      }
     }
   });
 
@@ -466,25 +468,17 @@
         this.$nextBtn.attr('href', getURL(1, this.page));
       }
     },
-    clearPalette : function () {
-      if (this._palettePageView) {
-        this._palettePageView.close();
-        this._palettePageView = null;
-      }
-    },
     render : function(pageload) {
       if (typeof pageload !== "boolean" || pageload == true) {
+        // init code from fresh pageload
         PageView.prototype.render.apply(this);
         this.$prevBtn = $('#palette-prev-button');
         this.$nextBtn = $('#palette-next-button');
-      }
-      // the router ensures that the butterfly model has the right spot count
-      var start = (this.page - 1) * pageLength;
-      if(typeof this._palettePageView == "undefined" ||
-          this._palettePageView == null) {
         this._palettePageView = new PalettePageView();
         this.childViews.push(this._palettePageView);
       }
+      // the router ensures that the butterfly model has the right spot count
+      var start = (this.page - 1) * pageLength;
       this._palettePageView.setCollection(
         new Butterflies(butterfliesWithSpotCount.slice(start, start + pageLength)));
       this.setPaginationButtons();
@@ -493,7 +487,6 @@
     close : function () {
       this.$prevBtn = null;
       this.$nextBtn = null;
-      this.clearPalette();
       PageView.prototype.close.apply(this);
     }
   });
@@ -700,7 +693,6 @@
         butterfly.set('eyespot_count', spotCount);
         updateButterfliesWithSpotCount(spotCount);
         app.views.paletteView.setPage(page);
-        app.views.paletteView.clearPalette();
         this.defaultTransition('palette');
       }
     },
