@@ -1,4 +1,4 @@
-// $(function () {
+$(function () {
 
   // helper to load images using jquery deferred objects
   // see http://aboutcode.net/2013/01/09/load-images-with-jquery-deferred.html
@@ -718,4 +718,4 @@
   var router = new Router();
   Backbone.history.start();
 
-// });
+});
