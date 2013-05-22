@@ -149,8 +149,6 @@ $(function () {
     },
     childViews : [],
     close : function() {
-      // TODO: should we be removing and unbinding here?
-      // each page instance is only created once...
       unbindNavLinks(this.$el);
       this.unbind();
       _.each(this.childViews, function(childView) {
@@ -159,6 +157,7 @@ $(function () {
           delete childView;
       });
       this.childViews = [];
+      this.$el.empty();
     }
   });
 
@@ -374,7 +373,6 @@ $(function () {
     render : function() {
       var children = this.$el.children();
       var that = this;
-      // debugger;
       if (children.length != 0) {
         // animate out the old page
         _(children.get().reverse()).each(function(el, i) {
@@ -502,7 +500,7 @@ $(function () {
       return this;
     },
     close : function () {
-      ButterflyPaletteView.prototype.close.apply(this, [true]);
+      ButterflyPaletteView.prototype.close.apply(this, [true]); // force removal
     }
   });
 
@@ -602,10 +600,6 @@ $(function () {
         $reveal.fadeIn();
       })
       i.src = "img/butterflies/" + butterfly.get('id') + ".jpg";
-    },
-    close : function () {
-      PageView.prototype.close.apply(this);
-      console.log('closing reveal page');
     }
   });
 
@@ -637,13 +631,9 @@ $(function () {
       var that = this;
       $viewEl.promise().done(function() {
         if (that.oldView) {
-          // debugger;
-          // console.log("that.oldView", that.oldView);
           that.oldView.close();
-          // that.oldView.remove();
         }
         $viewEl.html(view[fn]).fadeIn(animate ? viewFade : 0);
-        // bindNavLinks($viewEl);
       });
       this.oldView = view;
     }
