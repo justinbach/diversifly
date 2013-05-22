@@ -502,8 +502,7 @@ $(function () {
       return this;
     },
     close : function () {
-      ButterflyPaletteView.prototype.close.apply(this);
-      console.log('closing reveal view');
+      ButterflyPaletteView.prototype.close.apply(this, [true]);
     }
   });
 
@@ -518,7 +517,7 @@ $(function () {
       var that = this;
       // hide all the usual elements
       var $banner = $(".banner");
-      // TODO: use IDs, not classes
+      // TODO: use IDs, not classes?
       var $spacer = $(".spacer");
       var $button = $(".button");
       var $reveal = $('#butterfly-reveal');
