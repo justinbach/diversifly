@@ -649,7 +649,8 @@ $(function () {
     var track = function () {
       var url = Backbone.history.getFragment();
       url = url == "" ? "home" : url;
-      _gaq.push('_trackPageView', '/' + url);
+      _gaq.push(['_trackPageview', '/' + url]);
+      console.log("tracking /" + url);
     };
     return {
       track : track

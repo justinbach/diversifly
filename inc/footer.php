@@ -14,7 +14,9 @@
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-43844862-1']);
-    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName', '']);
+    _gaq.push(['_setAllowLinker', true]);
+    // _gaq.push(['_trackPageview']);
 
     (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
