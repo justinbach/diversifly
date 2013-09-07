@@ -1,8 +1,0 @@
-@font-face {
-    font-family: 'BrandonGrotesqueBlack';
-    src: url('brandon_blk.eot');
-    src: url('brandon_blk.eot') format('embedded-opentype'),
-         url('brandon_blk.woff') format('woff'),
-         url('brandon_blk.ttf') format('truetype'),
-         url('brandon_blk.svg#BrandonGrotesqueBlack') format('svg');
-}
