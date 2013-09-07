@@ -639,13 +639,32 @@ $(function () {
     }
   });
 
-  var app = new App;
+  var app = new App();
+
+  //////////////////////////////////
+  // TRACKING
+  //////////////////////////////////
+
+  var Tracker = function () {
+    var track = function () {
+      var url = Backbone.history.getFragment();
+      url = url == "" ? "home" : url;
+      _gaq.push('_trackPageView', '/' + url);
+    };
+    return {
+      track : track
+    };
+  }
+
+  var tracker = new Tracker();
+
 
   //////////////////////////////////
   // ROUTING
   //////////////////////////////////
 
   var Router = Backbone.Router.extend({
+
     routes : {
       "palette/eyespots/:spotCount/page/:page" : "palette",
       "butterfly/:id" : "butterfly",
@@ -665,7 +684,7 @@ $(function () {
     oldRoute : "",
 
     defaultPage : function () {
-      this.defaultTransition('home')
+      this.defaultTransition('home');
     },
 
     home : function () {
@@ -676,6 +695,7 @@ $(function () {
 
     palette : function (spotCount, page) {
       if (this.oldRoute.indexOf("palette") != -1) {
+        tracker.track();
         // pagination event
         app.views.paletteView.updatePagination(page);
       } else {
@@ -690,6 +710,7 @@ $(function () {
       butterfly = getButterflyByID(id);
       if (this.oldRoute.indexOf("palette") != -1) {
         // complete animation from palette screen
+        tracker.track();
         app.showView(app.views.butterflyView, false, "renderWithID");
         this.oldRoute = 'butterfly';
       } else {
@@ -698,6 +719,7 @@ $(function () {
     },
 
     defaultTransition : function (route) {
+      tracker.track();
       app.showView(app.views[this.pageViewMap[route]])
       this.oldRoute = route;
     }
