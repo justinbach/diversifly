@@ -658,6 +658,34 @@ $(function () {
 
   var tracker = new Tracker();
 
+  //////////////////////////////////
+  // NON-USAGE TIMEOUT
+  //////////////////////////////////
+
+  var UsageTimer = function () {
+    var interval = 1000 * 60 * 2, // 2 minutes
+        timeout = null,
+        reload = function () {
+          document.location.href = document.location.href.split('#')[0];
+        },
+        start = function () {
+          timeout = setTimeout(reload, interval);
+        },
+        reset = function () {
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          start();
+        }
+    ;
+    return {
+      start: start,
+      reset: reset
+    };
+  }
+
+  var timer = new UsageTimer();
+  timer.start();
 
   //////////////////////////////////
   // ROUTING
@@ -696,6 +724,7 @@ $(function () {
     palette : function (spotCount, page) {
       if (this.oldRoute.indexOf("palette") != -1) {
         tracker.track();
+        timer.reset();
         // pagination event
         app.views.paletteView.updatePagination(page);
       } else {
@@ -711,6 +740,7 @@ $(function () {
       if (this.oldRoute.indexOf("palette") != -1) {
         // complete animation from palette screen
         tracker.track();
+        timer.reset();
         app.showView(app.views.butterflyView, false, "renderWithID");
         this.oldRoute = 'butterfly';
       } else {
@@ -720,6 +750,7 @@ $(function () {
 
     defaultTransition : function (route) {
       tracker.track();
+      timer.reset();
       app.showView(app.views[this.pageViewMap[route]])
       this.oldRoute = route;
     }
