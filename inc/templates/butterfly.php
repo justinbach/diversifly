@@ -1,7 +1,7 @@
 <script type="text/template" id="butterfly-template">
   <!--<div id="butterfly-goal" class="goal"></div>-->
   <div id="butterfly" class="page-container">
-    <img src="img/diversifly_logo.svg" width="180" height="134" />
+    <img src="img/diversifly_logo.png" width="180" height="134" />
     <h1 class="banner">YOUR BUTTERFLY</h1>
     <div class="spacer"></div>
     <div class="butterfly-page">

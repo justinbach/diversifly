@@ -1,7 +1,7 @@
 <script type="text/template" id="eyespots-template">
   <!-- <div id="eyespots-goal" class="goal"></div> -->
   <div id="eyespots" class="page-container">
-    <img src="img/diversifly_logo.svg" width="180" height="134" />
+    <img src="img/diversifly_logo.png" width="180" height="134" />
     <h1 class="banner">SELECT NUMBER OF EYESPOTS</h1>
     <div class="spacer"></div>
     <div id="eyespot-selector">
