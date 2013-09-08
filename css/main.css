@@ -139,6 +139,7 @@ textarea {
   margin: 0 auto;
   text-align: center;
   -webkit-text-stroke: 0.2px #000;
+  letter-spacing: -0.04em;
 }
 
 .subtitle {
@@ -148,7 +149,7 @@ textarea {
   text-align: center;
   margin: auto;
   letter-spacing: -1px;
-  width: 576px;
+  width: 820px;
   line-height: 34px;
 }
 
@@ -161,7 +162,7 @@ a, a:visited {
   font-size: 22px;
   margin: auto;
   text-align: center;
-  width: 600px;
+  width: 820px;
   line-height: 34px;
 }
 
@@ -311,7 +312,7 @@ body {
 
 #about {
   padding-top: 94px;
-  width: 620px;
+  width: 960px;
 }
 
 #about .banner {
