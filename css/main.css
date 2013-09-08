@@ -95,33 +95,6 @@ textarea {
 
 /* Typefaces */
 @font-face {
-    font-family: 'BrandonGrotesqueBlack';
-    src: url('../fonts/brandon_blk.eot');
-    src: url('../fonts/brandon_blk.eot') format('embedded-opentype'),
-         url('../fonts/brandon_blk.woff') format('woff'),
-         url('../fonts/brandon_blk.ttf') format('truetype'),
-         url('../fonts/brandon_blk.svg#BrandonGrotesqueBlack') format('svg');
-}
-
-@font-face {
-    font-family: 'PTSansBold';
-    src: url('../fonts/pts75f.eot');
-    src: url('../fonts/pts75f.eot') format('embedded-opentype'),
-         url('../fonts/pts75f.woff') format('woff'),
-         url('../fonts/pts75f.ttf') format('truetype'),
-         url('../fonts/pts75f.svg#PTSansBold') format('svg');
-}
-
-@font-face {
-    font-family: 'PTSansRegular';
-    src: url('../fonts/pts55f.eot');
-    src: url('../fonts/pts55f.eot') format('embedded-opentype'),
-         url('../fonts/pts55f.woff') format('woff'),
-         url('../fonts/pts55f.ttf') format('truetype'),
-         url('../fonts/pts55f.svg#PTSansRegular') format('svg');
-}
-
-@font-face {
     font-family: 'quicksandbold';
     src: url('../fonts/quicksand-bold-webfont.eot');
     src: url('../fonts/quicksand-bold-webfont.eot?#iefix') format('embedded-opentype'),
@@ -303,13 +276,13 @@ body {
 .button span {
   position: absolute;
   top: 64px;
-  left: 51px;
+  left: 40px;
   display: block;
   text-align: center;
-  width: 80px;
+  width: 102px;
   z-index: 5;
   font-family: "quicksandbold";
-  font-size: 24px;
+  font-size: 21px;
   line-height: 24px;
 }
 
@@ -401,7 +374,7 @@ body {
   position: absolute;
   left: 50%;
   bottom: 6px;
-  margin-left: -171px;
+  margin-left: -166px;
   font-size: 67px; /* hack - this sets slider handle width indirectly */
   border: none;
   overflow: visible;
